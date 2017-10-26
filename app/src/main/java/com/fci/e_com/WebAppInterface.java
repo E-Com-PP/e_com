@@ -8,19 +8,18 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WebAppInterface
-{
+public class WebAppInterface {
     Context mContext;
     String data;
 
     WebAppInterface(Context ctx) {
-            this.mContext = ctx;
-        }
+        this.mContext = ctx;
+    }
 
     @JavascriptInterface
     public void sendData(String dataz) {
-            ((MainActivity)mContext).webInterface.data = dataz;
-        }
+        ((MainActivity)mContext).webInterface.data = dataz;
+    }
 
     @JavascriptInterface
     public void sendNews(String dataz)
@@ -57,19 +56,28 @@ public class WebAppInterface
         ((MainActivity)mContext).user.Grades = Grades;
     }
 
-        @JavascriptInterface
-        public void IsLoggedIn(String logged)
-        {
-            MainActivity MA = ((MainActivity)mContext);
-            MA.loggedIn = (logged.equals("true")) ? 1 : 0;
-            MA.handler.Login("", "");
-        }
+    @JavascriptInterface
+    public void IsLoggedIn(String logged)
+    {
+        MainActivity MA = ((MainActivity)mContext);
+        MA.loggedIn = (logged.equals("true")) ? 1 : 0;
+        MA.handler.Login("20160124", "testing123");
+    }
 
-        @JavascriptInterface
-        public void UserDataShow()
-        {
-            MainActivity MainActv = ((MainActivity)mContext);
-            MainActv.user = new UserSettings(MainActv.webInterface.data);
-            //TODO show data
-        }
+    @JavascriptInterface
+    public void UserDataShow()
+    {
+        MainActivity MainActv = ((MainActivity)mContext);
+        MainActv.user = new UserSettings(MainActv.webInterface.data);
+
+        //Toast.makeText(MainActv, MainActv.user.Name, Toast.LENGTH_SHORT).show();
+        //((TextView)ShowData.showData.findViewById(R.id.lblName)).setText(MainActv.user.Name);
+    }
+
+    @JavascriptInterface
+    public void AddOption(String option)
+    {
+        MainActivity MainActv = (MainActivity)mContext;
+        MainActv.handler.YearOptions.add(option);
+    }
 }

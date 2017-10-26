@@ -2,18 +2,27 @@ package com.fci.e_com;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.webkit.DownloadListener;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.net.Uri;
+import android.webkit.DownloadListener;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WebHandler {
-    public static MainActivity MainActv;
+    public MainActivity MainActv;
+    public List<String> YearOptions = new ArrayList<String>();
+
+
     public WebHandler(Context mainContxt) { MainActv = (MainActivity)mainContxt; }
 
     public void StartUp()
     {
-        MainActv.webViewer = (WebView) MainActv.findViewById(R.id.mainWebView);
+        MainActv.webViewer = (WebView)MainActv.findViewById(R.id.wbMain);
+        MainActv.webInterface = new WebAppInterface(MainActv);
 
         MainActv.webViewer.addJavascriptInterface(MainActv.webInterface, "Android");
         MainActv.webViewer.addJavascriptInterface(MainActv.GInterface, "GInter");
@@ -28,7 +37,7 @@ public class WebHandler {
         MainActv.webViewer.setWebViewClient(new WebViewClient() {
                                                 @Override
                                                 public void onPageFinished(WebView web, String url) {
-//                                                    CheckIfLoggedIn(false);
+                                                    CheckIfLoggedIn(false);
                                                 }
                                             });
 
@@ -63,6 +72,14 @@ public class WebHandler {
             MainActv.loggedIn = 0;
         }
     }
+    public void LogOut()
+    {
+        if(MainActv.loggedIn == 1)
+        {
+            LoadUrl("https://my.fci-cu.edu.eg/logout.php");
+            MainActv.loggedIn = 0;
+        }
+    }
 
     public void Login(final String Username, final String Password)
     {
@@ -83,6 +100,7 @@ public class WebHandler {
                         MainActv.webViewer.setWebViewClient(new WebViewClient() {
                             @Override
                             public void onPageFinished(WebView web, String url) {
+                                // TODO Auto-generated method stub
                                 ResetOnPageFinish();
                                 MainActv.webViewer.loadUrl(JS);
 
@@ -91,7 +109,9 @@ public class WebHandler {
                                     public void onPageFinished(WebView web, String url) {
                                         MainActv.loggedIn = 1;
 
-                                        MainActv.startActivity(new Intent(MainActv, ShowData.class));}});
+                                        Toast.makeText(MainActv, "Logged in", Toast.LENGTH_LONG).show();
+                                        //MainActv.startActivity(new Intent(MainActv, ShowData.class));
+                                    }});
                                 //GetUserData();
                             }
                         });
@@ -104,7 +124,9 @@ public class WebHandler {
                             public void onPageFinished(WebView web, String url) {
                                 MainActv.loggedIn = 1;
 
-                                MainActv.startActivity(new Intent(MainActv, ShowData.class));}});
+                                Toast.makeText(MainActv, "Logged in", Toast.LENGTH_LONG).show();
+                                //MainActv.startActivity(new Intent(MainActv, ShowData.class));
+                            }});
                     }
                 }
             });
@@ -183,11 +205,96 @@ public class WebHandler {
                 "}" +
                 "Android.sendGrades(result);");
     }
+    public void GetGrades(int semester, final String option)
+    {
+        if(YearOptions.size() != 0) {
+            String url = "https://my.fci-cu.edu.eg/content.php?pg=studgroup_term" + semester + ".php";
+            boolean loaded = LoadUrl(url);
+            if(loaded) {
+                MainActv.webViewer.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public void onPageFinished(WebView web, String url) {
+                        LoadUrl("javascript:var lst = document.getElementsByName(\"prev_years\")[0];\n" +
+                                "lst.selectedIndex = " + GetOptionIndex(option) + ";\n" +
+                                "var button = document.getElementsByClassName(\"TableHeader\")[1].children[0].children[0];\n" +
+                                "button.click();");
 
-    public void LoadUrl(String url)
+                        MainActv.webViewer.setWebViewClient(new WebViewClient() {
+                            @Override
+                            public void onPageFinished(WebView web, String url) {
+                                LoadUrl("javascript:var Tb = document.getElementsByClassName('FormTable')[0].children[0].children;" +
+                                        "var result = \"\";" +
+                                        "" +
+                                        "for(var i = 2; i < Tb.length; i++)" +
+                                        "{" +
+                                        "for(var n = 0; n < Tb[2].children.length; n++)" +
+                                        "{" +
+                                        "result += Tb[i].children[n].innerText.trim() + \"╖\";" +
+                                        "}" +
+                                        "result += \"±\";" +
+                                        "}" +
+                                        "Android.sendGrades(result);");
+                            }
+                        });
+                    }
+                });
+            }
+            else
+            {
+                LoadUrl("javascript:var lst = document.getElementsByName(\"prev_years\")[0];\n" +
+                        "lst.selectedIndex = " + GetOptionIndex(option) + ";\n" +
+                        "var button = document.getElementsByClassName(\"TableHeader\")[1].children[0].children[0];\n" +
+                        "button.click();");
+
+                MainActv.webViewer.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public void onPageFinished(WebView web, String url) {
+                        LoadUrl("javascript:var Tb = document.getElementsByClassName('FormTable')[0].children[0].children;" +
+                                "var result = \"\";" +
+                                "" +
+                                "for(var i = 2; i < Tb.length; i++)" +
+                                "{" +
+                                "for(var n = 0; n < Tb[2].children.length; n++)" +
+                                "{" +
+                                "result += Tb[i].children[n].innerText.trim() + \"╖\";" +
+                                "}" +
+                                "result += \"±\";" +
+                                "}" +
+                                "Android.sendGrades(result);");
+                    }
+                });
+            }
+        }
+        else
+        {
+            GetGradeYears(semester);
+        }
+    }
+
+    public void GetGradeYears(int semester)
+    {
+        String url = "https://my.fci-cu.edu.eg/content.php?pg=studgroup_term" + semester + ".php";
+        YearOptions.clear();
+
+        LoadJSOnPageFinish(url, "javascript:var lst = document.getElementsByName(\"prev_years\")[0];\n" +
+                "var options = lst.options;\n" +
+                "\n" +
+                "for(var i = 0; i < options.length; i++)\n" +
+                "{\n" +
+                "\tAndroid.AddOption(options[i].value);\n" +
+                "}");
+    }
+
+
+    public boolean LoadUrl(String url)
     {
         if(!MainActv.webViewer.getUrl().equals(url))
+        {
             MainActv.webViewer.loadUrl(url);
+            return true;
+        }
+        else
+            return false;
     }
 
     public void LoadJSOnPageFinish(final String url, final String JS)
@@ -230,5 +337,15 @@ public class WebHandler {
 
             }
         });
+    }
+
+    int GetOptionIndex(String option)
+    {
+        for(int i = 0; i < YearOptions.size(); i++)
+        {
+            if(option.equals(YearOptions.get(i)))
+                return i;
+        }
+        return -1;
     }
 }
