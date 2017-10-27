@@ -1,0 +1,124 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="60dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="layout.gradesMyFragment">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <RelativeLayout
+                android:id="@+id/top50_header"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/myGrades_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Year 1"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/myGrades_term"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/myGrades_year"
+                    android:layout_marginLeft="4dp"
+                    android:text="1st term"
+                    android:textSize="14sp" />
+
+                <Spinner
+                    android:id="@+id/spinner3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/MyGrades_header"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#DFE5EC"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/myGrades_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:text="Title"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/myGrades_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginRight="30dp"
+                    android:text="Total"
+                    android:textSize="16sp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/myGrades_grade"
+                    android:layout_toStartOf="@+id/myGrades_grade" />
+
+                <TextView
+                    android:id="@+id/myGrades_grade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="21dp"
+                    android:layout_marginRight="21dp"
+                    android:layout_toLeftOf="@+id/myGrades_absent"
+                    android:layout_toStartOf="@+id/myGrades_absent"
+                    android:text="Grade"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/myGrades_absent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:text="Absent"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/grades_my_grades" />
+
+            <include layout="@layout/grades_my_grades" />
+
+            <include layout="@layout/grades_my_grades" />
+
+            <include layout="@layout/grades_my_grades" />
+
+            <include layout="@layout/grades_my_grades" />
+
+            <include layout="@layout/grades_my_grades" />
+
+            <include layout="@layout/grades_my_grades" />
+
+            <include layout="@layout/grades_my_grades" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
+
