@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/inbox_card"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:layout_marginTop="5dp"
+    android:background="#EFF2F7"
+    android:padding="12dp"
+
+    >
+
+    <TextView
+        android:id="@+id/firstLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TA.ExampleDude"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/secondLine"
+        android:layout_width="wrap_content"
+        android:layout_height="20dip"
+        android:layout_below="@id/firstLine"
+        android:maxLines="1"
+        android:text="All Students"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center_vertical"
+        android:text="2020 18th Aug"
+        android:textAppearance="@style/Widget.AppCompat.Light.ListPopupWindow"
+        android:textColor="#8492A6"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/inbox_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/secondLine"
+        android:layout_margin="6dp"
+        android:maxLines="2"
+        android:text="Greyhound divisively hello coldly wonderfully
+marginally far upon excluding..."
+        android:textSize="14sp" />
+
+</RelativeLayout>
