@@ -17,7 +17,6 @@
             android:padding="10dp">
 
             <RelativeLayout
-                android:id="@+id/top50_header"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp">
