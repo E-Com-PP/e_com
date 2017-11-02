@@ -4,7 +4,12 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/E-Com++.iml" filepath="$PROJECT_DIR$/E-Com++.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+<<<<<<< HEAD
       <module fileurl="file://E:\My Projects\Android\E-Com++\ecom-git.iml" filepath="E:\My Projects\Android\E-Com++\ecom-git.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/e_com.iml" filepath="$PROJECT_DIR$/e_com.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ecom-git.iml" filepath="$PROJECT_DIR$/ecom-git.iml" />
+>>>>>>> 3e4733b3ba460f4258e217ff11219ac8acb60378
     </modules>
   </component>
 </project>
