@@ -5,4 +5,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="prompt_email">idk test</string>
+    <string name="prompt_password">idk test</string>
+    <string name="action_sign_in_short">idk test</string>
+    <string name="hello_blank_fragment">idk test</string>
 </resources>
