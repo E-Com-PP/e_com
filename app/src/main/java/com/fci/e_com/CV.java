@@ -45,8 +45,8 @@ public class CV {
     }
     public void GetOldValues()
     {
-        MainActivity.wv.loadUrl("https://my.fci-cu.edu.eg/content.php?pg=mycontact.php");
-        MainActivity.wv.setWebViewClient(new WebViewClient()
+        MainActivity.webViewer.loadUrl("https://my.fci-cu.edu.eg/content.php?pg=mycontact.php");
+        MainActivity.webViewer.setWebViewClient(new WebViewClient()
                                          {
                                              @Override
                                              public void onPageFinished(WebView web, String url)
@@ -91,7 +91,7 @@ public class CV {
                              String SchoolPercentageGrade,String Flanguage,String Slanguage,String Tlanguage,String TechnicalSkills,String Certificates,String Hobbies,String SportsMedals,String RBParty ,String RBHightschool,String RBSex
             ,String FlanguageMark,String MathMark)
     {
-        MainActivity.wv.loadUrl("javascript:("+"document.getElementsByClassName(FormTable')[0].rows[2].children[1].children[0].value=EnglishName"+
+        MainActivity.webViewer.loadUrl("javascript:("+"document.getElementsByClassName(FormTable')[0].rows[2].children[1].children[0].value=EnglishName"+
                 "document.getElementsByClassName('FormTable')[0].rows[4].children[1].children[0].value=CompanyName" +
                         "document.getElementsByClassName('FormTable')[0].rows[5].children[1].children[0].value=JobTitle" +
                         "document.getElementsByClassName('FormTable')[0].rows[6].children[1].children[0].value=PhoneNo" +
@@ -123,12 +123,12 @@ public class CV {
     }
     public void ChangeValues2(final String Newdata,final String NewdataPlace, final String Type)
     {
-        MainActivity.wv.loadUrl("javascript:document.getElementsByClassName('FormTable')[0]." + NewdataPlace +"."+ Type +"=" + Newdata);
+        MainActivity.webViewer.loadUrl("javascript:document.getElementsByClassName('FormTable')[0]." + NewdataPlace +"."+ Type +"=" + Newdata);
 //        .trigger('click');
     };
     public void Upadre()
     {
-        MainActivity.wv.loadUrl("javascript:("+"$('[name=\"add\"]').click()");
+        MainActivity.webViewer.loadUrl("javascript:("+"$('[name=\"add\"]').click()");
 
     }
 

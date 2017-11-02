@@ -18,6 +18,9 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     static WebView webViewer;
+    E_Mails allMails;
+    Top_50 top;
+    GWebAppInterface GInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        webViewer = new WebView(this);
+        allMails = new E_Mails(this);
+        top = new Top_50(this);
     }
 
     @Override
