@@ -1,5 +1,7 @@
 package com.fci.e_com;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,6 +18,11 @@ import android.webkit.WebView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import layout.gradesFragment;
+import layout.homeFragment;
+import layout.inboxFragment;
+import layout.newsFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -91,17 +98,17 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, new homeFragment()).commit();
         } else if (id == R.id.nav_inbox) {
-
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, new inboxFragment()).commit();
         } else if (id == R.id.nav_grades) {
-
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, new gradesFragment()).commit();
         } else if (id == R.id.nav_news) {
-
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, new newsFragment()).commit();
         } else if (id == R.id.nav_schedule) {
-
+            //getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, placeholder).commit();
         } else if (id == R.id.nav_logout) {
-
+            //getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, placeholder).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
