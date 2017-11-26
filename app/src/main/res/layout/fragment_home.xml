@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="layout.inboxMainFragment">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_layout"
+    android:layout_marginTop="60dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp"
     tools:context="layout.homeFragment">
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="false">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/Recent_inbox"
@@ -30,7 +40,9 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <include layout="@layout/home_inbox" />
+            <include
+                layout="@layout/home_inbox"
+                android:layout_width="100dp" />
 
             <include layout="@layout/home_inbox" />
 
@@ -66,3 +78,4 @@
     </ScrollView>
 
 </LinearLayout>
+</FrameLayout>

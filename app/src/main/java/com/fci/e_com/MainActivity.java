@@ -22,6 +22,7 @@ import java.util.List;
 import layout.gradesFragment;
 import layout.homeFragment;
 import layout.inboxFragment;
+import layout.inboxMainFragment;
 import layout.newsFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, new homeFragment()).commit();
         } else if (id == R.id.nav_inbox) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, new inboxFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, new inboxMainFragment()).commit();
         } else if (id == R.id.nav_grades) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, new gradesFragment()).commit();
         } else if (id == R.id.nav_news) {
