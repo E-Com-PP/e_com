@@ -14,13 +14,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     static WebView webViewer;
+    WebHandler handler = new WebHandler(this);
     E_Mails allMails;
     Top_50 top;
+    WebAppInterface webInterface;
     GWebAppInterface GInterface;
+
+    public UserSettings user;
+    public List<String> News = new ArrayList<String>();
+    public int loggedIn = 0;
+    public boolean isInstantiated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

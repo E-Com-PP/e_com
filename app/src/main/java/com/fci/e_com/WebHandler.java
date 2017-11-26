@@ -21,7 +21,7 @@ public class WebHandler {
 
     public void StartUp()
     {
-        MainActv.webViewer = (WebView)MainActv.findViewById(R.id.wbMain);
+        MainActv.webViewer = new WebView(MainActv);
         MainActv.webInterface = new WebAppInterface(MainActv);
 
         MainActv.webViewer.addJavascriptInterface(MainActv.webInterface, "Android");
