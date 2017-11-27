@@ -15,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,7 @@ import layout.newsFragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    static WebView webViewer;
+    WebView webViewer;
     WebHandler handler = new WebHandler(this);
     E_Mails allMails;
     Top_50 top;
@@ -61,6 +63,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResume()
+    {
+        super.onResume();
+
+        if(loggedIn == 0) {
+            handler.MainActv = this;
+            handler.StartUp();
+        }
+        //webViewer.loadUrl("https://my.fci-cu.edu.eg/");
+        //Toast.makeText(this, "Started Up!", Toast.LENGTH_LONG).show();
+        //handler.Login("20160124", "testing123");
+        //Toast.makeText(this, "Logged In!", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -86,6 +103,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            webViewer.loadUrl("https://my.fci-cu.edu.eg/");
             return true;
         }
 

@@ -21,7 +21,7 @@
         app:srcCompat="@drawable/ic_account_circle_black_24dp" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/nameTxt"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"

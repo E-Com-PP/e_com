@@ -70,6 +70,7 @@ public class WebAppInterface {
         MainActivity MainActv = ((MainActivity)mContext);
         MainActv.user = new UserSettings(MainActv.webInterface.data);
 
+        ((TextView)MainActv.findViewById(R.id.nameTxt)).setText(MainActv.user.Name);
         //Toast.makeText(MainActv, MainActv.user.Name, Toast.LENGTH_SHORT).show();
         //((TextView)ShowData.showData.findViewById(R.id.lblName)).setText(MainActv.user.Name);
     }

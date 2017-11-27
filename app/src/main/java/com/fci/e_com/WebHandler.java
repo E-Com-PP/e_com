@@ -21,7 +21,7 @@ public class WebHandler {
 
     public void StartUp()
     {
-        MainActv.webViewer = new WebView(MainActv);
+        MainActv.webViewer = MainActv.findViewById(R.id.wv1);
         MainActv.webInterface = new WebAppInterface(MainActv);
 
         MainActv.webViewer.addJavascriptInterface(MainActv.webInterface, "Android");
@@ -31,13 +31,13 @@ public class WebHandler {
         MainActv.webViewer.getSettings().setJavaScriptEnabled(true);
 
         MainActv.isInstantiated = true;
-        MainActv.webViewer.clearCache(true);
-        MainActv.webViewer.clearFormData();
+        //MainActv.webViewer.clearCache(true);
+        //MainActv.webViewer.clearFormData();
 
         MainActv.webViewer.setWebViewClient(new WebViewClient() {
                                                 @Override
                                                 public void onPageFinished(WebView web, String url) {
-                                                    CheckIfLoggedIn(false);
+                                                    CheckIfLoggedIn();
                                                 }
                                             });
 
@@ -54,7 +54,7 @@ public class WebHandler {
         MainActv.webViewer.loadUrl("https://my.fci-cu.edu.eg/");
     }
 
-    public void CheckIfLoggedIn(boolean activS)
+    public void CheckIfLoggedIn()
     {
         MainActv.webViewer.loadUrl("javascript:var result = document.getElementsByTagName('body')[0].innerHTML.includes('Academic Year:');Android.IsLoggedIn(result);");
     }
@@ -94,7 +94,7 @@ public class WebHandler {
                             "$(x).trigger('click');" +
                             "})()";
 
-                    if(!MainActv.webViewer.getUrl().equals(url)) {
+                    if(MainActv.webViewer.getUrl() == null || !MainActv.webViewer.getUrl().equals(url)) {
                         MainActv.webViewer.loadUrl(url);
 
                         MainActv.webViewer.setWebViewClient(new WebViewClient() {
@@ -110,6 +110,7 @@ public class WebHandler {
                                         MainActv.loggedIn = 1;
 
                                         Toast.makeText(MainActv, "Logged in", Toast.LENGTH_LONG).show();
+                                        GetUserData();
                                         //MainActv.startActivity(new Intent(MainActv, ShowData.class));
                                     }});
                                 //GetUserData();
@@ -125,6 +126,7 @@ public class WebHandler {
                                 MainActv.loggedIn = 1;
 
                                 Toast.makeText(MainActv, "Logged in", Toast.LENGTH_LONG).show();
+                                GetUserData();
                                 //MainActv.startActivity(new Intent(MainActv, ShowData.class));
                             }});
                     }

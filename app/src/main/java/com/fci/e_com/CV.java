@@ -9,6 +9,9 @@ import android.webkit.WebView;
 public class CV {
     String EnglishName, CompanyName,JobTitle, PhoneNo, MobileNo, Nationality, CountryOfBirth, NationalityE, CountryOfBirthE, NationalID,SpecialTemporaryCertificate, DateOfBirth, Fax, Email, Address, SchoolPercentageGrade, Flanguage, Slanguage, Tlanguage, TechnicalSkills
             , Certificates, Hobbies, SportsMedals,RBParty,RBHightschool,RBSex, FlanguageMark, MathMark;
+    MainActivity MainActv;
+
+    public CV(MainActivity mainActvT) { MainActv = mainActvT; }
 
     public void SaveOldValues( String EnglishName,String CompanyName,String JobTitle,String PhoneNo,String MobileNo,String Nationality,String CountryOfBirth,String NationalityE,String CountryOfBirthE,String NationalID, String SpecialTemporaryCertificate,String DateOfBirth,String Fax,String Email,String Address,
                  String SchoolPercentageGrade,String Flanguage,String Slanguage,String Tlanguage,String TechnicalSkills,String Certificates,String Hobbies,String SportsMedals,String RBParty ,String RBHightschool,String RBSex
@@ -45,8 +48,8 @@ public class CV {
     }
     public void GetOldValues()
     {
-        MainActivity.webViewer.loadUrl("https://my.fci-cu.edu.eg/content.php?pg=mycontact.php");
-        MainActivity.webViewer.setWebViewClient(new WebViewClient()
+        MainActv.webViewer.loadUrl("https://my.fci-cu.edu.eg/content.php?pg=mycontact.php");
+        MainActv.webViewer.setWebViewClient(new WebViewClient()
                                          {
                                              @Override
                                              public void onPageFinished(WebView web, String url)
@@ -91,7 +94,7 @@ public class CV {
                              String SchoolPercentageGrade,String Flanguage,String Slanguage,String Tlanguage,String TechnicalSkills,String Certificates,String Hobbies,String SportsMedals,String RBParty ,String RBHightschool,String RBSex
             ,String FlanguageMark,String MathMark)
     {
-        MainActivity.webViewer.loadUrl("javascript:("+"document.getElementsByClassName(FormTable')[0].rows[2].children[1].children[0].value=EnglishName"+
+        MainActv.webViewer.loadUrl("javascript:("+"document.getElementsByClassName(FormTable')[0].rows[2].children[1].children[0].value=EnglishName"+
                 "document.getElementsByClassName('FormTable')[0].rows[4].children[1].children[0].value=CompanyName" +
                         "document.getElementsByClassName('FormTable')[0].rows[5].children[1].children[0].value=JobTitle" +
                         "document.getElementsByClassName('FormTable')[0].rows[6].children[1].children[0].value=PhoneNo" +
@@ -123,12 +126,12 @@ public class CV {
     }
     public void ChangeValues2(final String Newdata,final String NewdataPlace, final String Type)
     {
-        MainActivity.webViewer.loadUrl("javascript:document.getElementsByClassName('FormTable')[0]." + NewdataPlace +"."+ Type +"=" + Newdata);
+        MainActv.webViewer.loadUrl("javascript:document.getElementsByClassName('FormTable')[0]." + NewdataPlace +"."+ Type +"=" + Newdata);
 //        .trigger('click');
     };
     public void Upadre()
     {
-        MainActivity.webViewer.loadUrl("javascript:("+"$('[name=\"add\"]').click()");
+        MainActv.webViewer.loadUrl("javascript:("+"$('[name=\"add\"]').click()");
 
     }
 
