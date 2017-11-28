@@ -7,6 +7,7 @@ import android.webkit.WebViewClient;
 import android.webkit.WebView;
 
 public class CV {
+
     String EnglishName, CompanyName,JobTitle, PhoneNo, MobileNo, Nationality, CountryOfBirth, NationalityE, CountryOfBirthE, NationalID,SpecialTemporaryCertificate, DateOfBirth, Fax, Email, Address, SchoolPercentageGrade, Flanguage, Slanguage, Tlanguage, TechnicalSkills
             , Certificates, Hobbies, SportsMedals,RBParty,RBHightschool,RBSex, FlanguageMark, MathMark;
 

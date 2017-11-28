@@ -1,10 +1,8 @@
 package com.fci.e_com;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,6 +15,13 @@ import android.webkit.WebView;
 import java.util.ArrayList;
 import java.util.List;
 
+import layout.gradesFragment;
+import layout.gradesTopFragment;
+import layout.homeFragment;
+import layout.inboxFragment;
+import layout.inboxMainFragment;
+import layout.newsFragment;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -26,6 +31,7 @@ public class MainActivity extends AppCompatActivity
     Top_50 top;
     WebAppInterface webInterface;
     GWebAppInterface GInterface;
+    FragmentTransaction fragmentTransaction;
 
     public UserSettings user;
     public List<String> News = new ArrayList<String>();
@@ -50,6 +56,9 @@ public class MainActivity extends AppCompatActivity
 
         allMails = new E_Mails(this);
         top = new Top_50(this);
+        fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.idFragment,new homeFragment());
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -70,7 +79,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+   public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -89,20 +98,45 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        switch (item.getItemId())
+        {
+            case (R.id.nav_home):
+                fragmentTransaction=getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.idFragment,new homeFragment());
+                fragmentTransaction.commit();
+                getSupportActionBar().setTitle("Home");
+                item.setChecked(true);
+                break;
+            case (R.id.inbox):
+                fragmentTransaction=getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.idFragment,new inboxFragment());
+                fragmentTransaction.commit();
+                getSupportActionBar().setTitle("Inbox");
+                item.setChecked(true);
+                break;
+            case (R.id.nav_grades):
+                fragmentTransaction=getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.idFragment,new gradesFragment());
+                fragmentTransaction.commit();
+                getSupportActionBar().setTitle("Grades");
+                item.setChecked(true);
+                break;
+            case (R.id.nav_news):
+                fragmentTransaction=getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.idFragment,new newsFragment());
+                fragmentTransaction.commit();
+                getSupportActionBar().setTitle("News");
+                item.setChecked(true);
+                break;
+            case (R.id.nav_schedule):
+                break;
+            case (R.id.nav_logout):
+                break;
 
-        if (id == R.id.nav_home) {
-
-        } else if (id == R.id.nav_inbox) {
-
-        } else if (id == R.id.nav_grades) {
-
-        } else if (id == R.id.nav_news) {
-
-        } else if (id == R.id.nav_schedule) {
-
-        } else if (id == R.id.nav_logout) {
 
         }
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
