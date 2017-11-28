@@ -10,4 +10,5 @@
     <string name="prompt_password">idk test</string>
     <string name="action_sign_in_short">idk test</string>
     <string name="hello_blank_fragment">idk test</string>
+    <string name="link">&lt;a href="http://www.google.com">Google&lt;/a></string>
 </resources>

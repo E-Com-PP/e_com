@@ -59,4 +59,14 @@ public class UserSettings {
             SectionAbs = Integer.parseInt(courseData[8]);
             TotalAbs = Integer.parseInt(courseData[9]);
         }
-}
+    }
+
+    class NewsObj{
+        String Data, Date;
+
+        public NewsObj(String data, String date)
+        {
+            Data = data;
+            Date = date;
+        }
+    }

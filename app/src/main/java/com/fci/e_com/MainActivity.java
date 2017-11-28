@@ -5,6 +5,10 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.text.Html;
+import android.text.Layout;
+import android.text.method.LinkMovementMethod;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,7 +18,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +44,7 @@ public class MainActivity extends AppCompatActivity
     GWebAppInterface GInterface;
 
     public UserSettings user;
-    public List<String> News = new ArrayList<String>();
+    public List<NewsObj> News = new ArrayList<NewsObj>();
     public int loggedIn = 0;
     public boolean isInstantiated = false;
 
@@ -71,10 +77,6 @@ public class MainActivity extends AppCompatActivity
             handler.MainActv = this;
             handler.StartUp();
         }
-        //webViewer.loadUrl("https://my.fci-cu.edu.eg/");
-        //Toast.makeText(this, "Started Up!", Toast.LENGTH_LONG).show();
-        //handler.Login("20160124", "testing123");
-        //Toast.makeText(this, "Logged In!", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -103,7 +105,10 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            webViewer.loadUrl("https://my.fci-cu.edu.eg/");
+            if(GetFragClass() == newsFragment.class)
+                fillFragment(News.size(), 0);
+            else if(GetFragClass() == homeFragment.class)
+                fillFragment(0, 1);
             return true;
         }
 
@@ -118,12 +123,14 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, new homeFragment()).commit();
+            handler.GetNews();
         } else if (id == R.id.nav_inbox) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, new inboxMainFragment()).commit();
         } else if (id == R.id.nav_grades) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, new gradesFragment()).commit();
         } else if (id == R.id.nav_news) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, new newsFragment()).commit();
+            handler.GetNews();
         } else if (id == R.id.nav_schedule) {
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, placeholder).commit();
         } else if (id == R.id.nav_logout) {
@@ -133,5 +140,69 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public Class<? extends android.support.v4.app.Fragment> GetFragClass()
+    {
+        return getSupportFragmentManager().getFragments().get(0).getClass();
+    }
+
+    public void fillFragment(int num, int type)
+    {
+        class FillFragmentsRunnable implements Runnable{
+            int num, type;
+            FillFragmentsRunnable(int numT, int typeT) {num = numT; type = typeT;}
+            public void run()
+            {
+                LayoutInflater infl = getLayoutInflater();
+                switch(type)
+                {
+                    //News Fragment
+                    case 0: {
+                        LinearLayout ll = (LinearLayout)findViewById(R.id.LLNews);
+
+                        ll.removeAllViews();
+                        for (int i = 0; i < num; i++) {
+                            infl.inflate(R.layout.home_news, (ViewGroup) ll);
+
+                            TextView txtV = (TextView) (((ViewGroup) ll.getChildAt(i)).getChildAt(1));
+                            txtV.setMovementMethod(LinkMovementMethod.getInstance());
+                            txtV.setText(Html.fromHtml(News.get(i).Data));
+
+                            txtV = (TextView) (((ViewGroup) ll.getChildAt(i)).getChildAt(0));
+                            txtV.setMovementMethod(LinkMovementMethod.getInstance());
+
+                            txtV.setText(Html.fromHtml(News.get(i).Date));
+                        }
+                        break;
+                    }
+                    //Home Fragment
+                    case 1: {
+                        LinearLayout ll = (LinearLayout) findViewById(R.id.LLHome);
+
+                        ll.removeViewAt(6);
+                        ll.removeViewAt(6);
+
+                        if(News.size() != 0)
+                            for(int i = 0; i < 2; i++)
+                            {
+                                infl.inflate(R.layout.home_news, (ViewGroup) ll);
+
+                                TextView txtV = (TextView) (((ViewGroup) ll.getChildAt(6 + i)).getChildAt(1));
+                                txtV.setMovementMethod(LinkMovementMethod.getInstance());
+
+                                txtV.setText(Html.fromHtml(News.get(i).Data));
+
+                                txtV = (TextView) (((ViewGroup) ll.getChildAt(6 + i)).getChildAt(0));
+                                txtV.setMovementMethod(LinkMovementMethod.getInstance());
+
+                                txtV.setText(Html.fromHtml(News.get(i).Date));
+                            }
+                    }
+                }
+            }
+        }
+        findViewById(R.id.drawer_layout).post(new FillFragmentsRunnable(num,type));
+
     }
 }
