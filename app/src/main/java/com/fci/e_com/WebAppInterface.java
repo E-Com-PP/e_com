@@ -2,11 +2,17 @@ package com.fci.e_com;
 
 import android.content.Context;
 import android.webkit.JavascriptInterface;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import layout.homeFragment;
+import layout.newsFragment;
 
 public class WebAppInterface {
     Context mContext;
@@ -24,22 +30,22 @@ public class WebAppInterface {
     @JavascriptInterface
     public void sendNews(String dataz)
     {
+        MainActivity MainActv = ((MainActivity)mContext);
         String[] dataA = dataz.split("±");
-        List<String> result = new ArrayList<String>();
+        List<NewsObj> result = new ArrayList<NewsObj>();
 
         for(int i = 0; i < dataA.length; i++)
         {
-            String[] msgs = dataA[i].split("╖");
-            String toadd = "";
-
-            for(int n = 0; n < msgs.length; n++)
-            {
-                toadd += msgs[n];
-            }
-            result.add(toadd);
+            String[] toadd = dataA[i].split("╖");
+            result.add(new NewsObj(toadd[1], toadd[0]));
         }
 
-        ((MainActivity)mContext).News = result;
+        MainActv.News = result;
+
+        if(MainActv.GetFragClass() == newsFragment.class)
+            MainActv.fillFragment(result.size(), 0);
+        else if(MainActv.GetFragClass() == homeFragment.class)
+            MainActv.fillFragment(0, 1);
     }
 
     @JavascriptInterface
@@ -54,6 +60,7 @@ public class WebAppInterface {
         }
 
         ((MainActivity)mContext).user.Grades = Grades;
+        ((MainActivity) mContext).fillFragment(Grades.size(), 2);
     }
 
     @JavascriptInterface
@@ -80,5 +87,8 @@ public class WebAppInterface {
     {
         MainActivity MainActv = (MainActivity)mContext;
         MainActv.handler.YearOptions.add(option);
+
+
+
     }
 }

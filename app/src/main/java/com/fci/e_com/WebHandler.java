@@ -14,7 +14,7 @@ import java.util.List;
 
 public class WebHandler {
     public MainActivity MainActv;
-    public List<String> YearOptions = new ArrayList<String>();
+    public static List<String> YearOptions = new ArrayList<String>();
 
 
     public WebHandler(Context mainContxt) { MainActv = (MainActivity)mainContxt; }
@@ -160,7 +160,7 @@ public class WebHandler {
 
     public void GetNews()
     {
-        LoadJSOnPageFinish("https://my.fci-cu.edu.eg/", "javascript:var MainText = document.getElementsByClassName(\"items\")[0];" +
+        /*LoadJSOnPageFinish("https://my.fci-cu.edu.eg/", "javascript:var MainText = document.getElementsByClassName(\"items\")[0];" +
                 "var result = \"\";" +
                 "" +
                 "for(var i = 0; i < MainText.childElementCount; i++)" +
@@ -181,10 +181,24 @@ public class WebHandler {
                 "includez = true;" +
                 "}" +
                 "" +
-                "result += (includez) ? TextObj[c][0] : TextObj[c];" +
+                "result += (includez) ? TextObj[c][0] : \"<a href=\" + TextObj[c];" +
                 "result += (includez) ? \"╖\" + TextObj[c][1] + \"╖\" : \"\";" +
                 "}" +
                 "result += \"±\";" +
+                "}" +
+                "}" +
+                "Android.sendNews(result);");*/
+        LoadJSOnPageFinish("https://my.fci-cu.edu.eg/", "javascript:var MainText = document.getElementsByClassName(\"items\")[0];" +
+                "var result = \"\";" +
+                "" +
+                "for(var i = 0; i < MainText.childElementCount; i++)" +
+                "{" +
+                "var Child = MainText.children[i];" +
+                "for(var n = 0; n < Child.childElementCount; n++)" +
+                "{" +
+                "var TextObj = Child.children[n].children[0].children[1].children[0];" +
+                "TextObj = TextObj.innerHTML;" +
+                "result += Child.children[n].children[0].childNodes[0].wholeText + \"╖\" + TextObj + \"±\";" +
                 "}" +
                 "}" +
                 "Android.sendNews(result);");
