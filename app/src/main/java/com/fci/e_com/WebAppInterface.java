@@ -2,6 +2,9 @@ package com.fci.e_com;
 
 import android.content.Context;
 import android.webkit.JavascriptInterface;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +60,7 @@ public class WebAppInterface {
         }
 
         ((MainActivity)mContext).user.Grades = Grades;
+        ((MainActivity) mContext).fillFragment(Grades.size(), 2);
     }
 
     @JavascriptInterface
@@ -83,5 +87,8 @@ public class WebAppInterface {
     {
         MainActivity MainActv = (MainActivity)mContext;
         MainActv.handler.YearOptions.add(option);
+
+
+
     }
 }

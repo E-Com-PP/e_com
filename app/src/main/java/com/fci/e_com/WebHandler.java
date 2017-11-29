@@ -14,7 +14,7 @@ import java.util.List;
 
 public class WebHandler {
     public MainActivity MainActv;
-    public List<String> YearOptions = new ArrayList<String>();
+    public static List<String> YearOptions = new ArrayList<String>();
 
 
     public WebHandler(Context mainContxt) { MainActv = (MainActivity)mainContxt; }
