@@ -144,7 +144,31 @@ public class MainActivity extends AppCompatActivity
             trans.replace(R.id.fragContainer, new homeFragment()).commit();
         }
         else if (id == R.id.nav_inbox) {
-            trans.replace(R.id.fragContainer, new inboxMainFragment()).commit();
+            try {
+                trans.runOnCommit(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        TabHost host = findViewById(R.id.inboxtabhost);
+                        host.setup();
+
+                        TabHost.TabSpec spec = host.newTabSpec("Inbox");
+                        spec.setContent(R.id.inbox);
+                        spec.setIndicator("Inbox");
+                        host.addTab(spec);
+                        spec = host.newTabSpec("Received Files");
+                        spec.setContent(R.id.files);
+                        spec.setIndicator("Received Files");
+                        host.addTab(spec);
+                        
+                    }
+                });
+                trans.replace(R.id.fragContainer, new inboxFragment()).commit();
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
         }
         else if (id == R.id.nav_grades) {
             trans.runOnCommit(new Runnable() {
@@ -313,6 +337,11 @@ public class MainActivity extends AppCompatActivity
                                 txtV.setText(Integer.toString(user.Grades.get(i-2).TotalAbs));
                             }
                         }
+
+                        break;
+                    }
+                    case 4:
+                    {
 
                         break;
                     }

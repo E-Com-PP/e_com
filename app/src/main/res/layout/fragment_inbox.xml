@@ -9,7 +9,7 @@
     >
 
     <TabHost
-        android:id="@+id/tabhost"
+        android:id="@+id/inboxtabhost"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
