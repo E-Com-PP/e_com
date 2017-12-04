@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity
                         spec.setContent(R.id.files);
                         spec.setIndicator("Received Files");
                         host.addTab(spec);
-                        
+                        //fillFragment(0, 4);
                     }
                 });
                 trans.replace(R.id.fragContainer, new inboxFragment()).commit();
@@ -342,7 +342,22 @@ public class MainActivity extends AppCompatActivity
                     }
                     case 4:
                     {
+                        allMails.loadPage();
 
+                        LinearLayout inboxLayout = (LinearLayout)findViewById(R.id.inbox);
+                        inboxLayout.removeAllViews();
+
+                        for(int i = 0; i < 7; i++) {
+                            infl.inflate(R.layout.home_inbox, (ViewGroup) inboxLayout);
+
+                            Toast.makeText(MainActivity.this, allMails.e_mails.get(i).from, Toast.LENGTH_LONG).show();
+
+                            ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(0))).setText(allMails.e_mails.get(i).from);
+                            ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(1))).setText(allMails.e_mails.get(i).to);                            ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(0))).setText(allMails.e_mails.get(i).from);
+                            ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(2))).setText(allMails.e_mails.get(i).date);
+                            ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(3))).setText(allMails.e_mails.get(i).msg);
+
+                        }
                         break;
                     }
                 }

@@ -24,7 +24,7 @@ public class E_Mails
         MainActv = c;
     }
 
-    public void loadPage(WebView w) {
+    public void loadPage() {
         e_mailsPageNumber++;
         MainActv.webViewer.loadUrl("https://my.fci-cu.edu.eg/content.php?pg=fromadmin.php&mt=" + Integer.toString(e_mailsPageNumber));
         MainActv.webViewer.setWebViewClient(new WebViewClient() {
