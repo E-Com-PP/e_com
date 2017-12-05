@@ -344,7 +344,7 @@ public class MainActivity extends AppCompatActivity
                     }
                     case 4:
                     {
-                        LinearLayout inboxLayout = (LinearLayout)findViewById(R.id.inbox);
+                        LinearLayout inboxLayout = (LinearLayout)((ViewGroup)findViewById(R.id.inbox)).getChildAt(0);
                         inboxLayout.removeAllViews();
 
                         for(int i = 0; i < 7; i++) {
@@ -361,7 +361,7 @@ public class MainActivity extends AppCompatActivity
                     }
                     case 5:
                     {
-                        LinearLayout filesLayout = (LinearLayout)findViewById(R.id.files);
+                        LinearLayout filesLayout = (LinearLayout)((ViewGroup)findViewById(R.id.files)).getChildAt(0);
                         filesLayout.removeAllViews();
 
                         for(int i = 0; i < 7; i++) {
