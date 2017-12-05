@@ -23,6 +23,7 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void run() {
 
-                        TabHost host = findViewById(R.id.inboxtabhost);
+                        TabHost host = (TabHost)findViewById(R.id.inboxtabhost);
                         host.setup();
 
                         TabHost.TabSpec spec = host.newTabSpec("Inbox");
@@ -175,7 +176,7 @@ public class MainActivity extends AppCompatActivity
             trans.runOnCommit(new Runnable() {
                 @Override
                 public void run() {
-                    TabHost host = findViewById(R.id.tabhost);
+                    TabHost host = (TabHost)findViewById(R.id.tabhost);
                     host.setup();
 
                     TabHost.TabSpec spec = host.newTabSpec("My Grades");
@@ -349,14 +350,28 @@ public class MainActivity extends AppCompatActivity
                         for(int i = 0; i < 7; i++) {
                             infl.inflate(R.layout.home_inbox, (ViewGroup) inboxLayout);
 
-                            Toast.makeText(MainActivity.this, allMails.e_mails.get(i).from, Toast.LENGTH_LONG).show();
-
                             ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(0))).setText(allMails.e_mails.get(i).from);
-                            ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(1))).setText(allMails.e_mails.get(i).to);                            ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(0))).setText(allMails.e_mails.get(i).from);
+                            ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(1))).setText(allMails.e_mails.get(i).to);
                             ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(2))).setText(allMails.e_mails.get(i).date);
                             ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(3))).setText(allMails.e_mails.get(i).msg);
                         }
-                        Toast.makeText(MainActivity.this, "FILL", Toast.LENGTH_SHORT).show();
+
+                        allMails.sendFiles();
+                        break;
+                    }
+                    case 5:
+                    {
+                        LinearLayout filesLayout = (LinearLayout)findViewById(R.id.files);
+                        filesLayout.removeAllViews();
+
+                        for(int i = 0; i < 7; i++) {
+                            infl.inflate(R.layout.home_inbox, (ViewGroup) filesLayout);
+
+                            ((TextView) (((ViewGroup) filesLayout.getChildAt(i)).getChildAt(0))).setText(allMails.recievedFile.get(i).from);
+                            ((TextView) (((ViewGroup) filesLayout.getChildAt(i)).getChildAt(1))).setText(allMails.recievedFile.get(i).to);
+                            ((TextView) (((ViewGroup) filesLayout.getChildAt(i)).getChildAt(2))).setText(allMails.recievedFile.get(i).date);
+                            ((TextView) (((ViewGroup) filesLayout.getChildAt(i)).getChildAt(3))).setText(allMails.recievedFile.get(i).fileDescription);
+                        }
                         break;
                     }
                 }
