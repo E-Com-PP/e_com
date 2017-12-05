@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity
     String currSelectedYear = "";
     String CurrentselectedYear2="";
     String CurrentSelectedType="";
+    int GraterThan2 =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -286,7 +287,7 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                         CurrentSelectedType = parentView.getSelectedItem().toString();
-                        //((TextView) findViewById(R.id.rank_top50)).setText("Year " + Integer.toString(parentView.getCount() - position));
+
                     }
 
                     @Override
@@ -304,6 +305,7 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 }
+
 
                 break;
 
@@ -332,6 +334,10 @@ public class MainActivity extends AppCompatActivity
                 TempSpinner.setAdapter(adap);
 
                 if (CurrentselectedYear2 != "") {
+                    if(CurrentselectedYear2=="3"||CurrentselectedYear2=="4")
+                    {
+                       GraterThan2=1;
+                    }
                     for (int i = 0; i < TempSpinner.getCount(); i++) {
                         if (CurrentselectedYear2.equals(TempSpinner.getItemAtPosition(i).toString())) {
                             TempSpinner.setSelection(i);
@@ -444,7 +450,7 @@ public class MainActivity extends AppCompatActivity
                                 txtV.setText(top.Top_50[i][2]);
                                 txtV = (TextView) (((ViewGroup) ll.getChildAt(2+i)).getChildAt(2));
                                 txtV.setMovementMethod(LinkMovementMethod.getInstance());
-                                txtV.setText(top.Top_50[i][3]);
+                                txtV.setText(top.Top_50[i][3+num]);
 
 
                         }
