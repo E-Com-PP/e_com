@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity
     String CurrentselectedYear2="";
     String CurrentSelectedType="";
     int GraterThan2 =0;
+    boolean EqualALl=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -298,6 +299,12 @@ public class MainActivity extends AppCompatActivity
                 });
                 TempSpinner.setAdapter(adap);
                 if (CurrentSelectedType != "") {
+                    if (CurrentSelectedType!="ALL")
+                    {
+                        EqualALl=true;
+
+                    }
+                    else {EqualALl=false;}
                     for (int i = 0; i < TempSpinner.getCount(); i++) {
                         if (CurrentSelectedType.equals(TempSpinner.getItemAtPosition(i).toString())) {
                             TempSpinner.setSelection(i);
@@ -334,10 +341,15 @@ public class MainActivity extends AppCompatActivity
                 TempSpinner.setAdapter(adap);
 
                 if (CurrentselectedYear2 != "") {
-                    if(CurrentselectedYear2=="3"||CurrentselectedYear2=="4")
+                    if((CurrentselectedYear2=="3"||CurrentselectedYear2=="4")&&!EqualALl)
                     {
+
                        GraterThan2=1;
                     }
+                    else
+                        {
+                            GraterThan2=0;
+                        }
                     for (int i = 0; i < TempSpinner.getCount(); i++) {
                         if (CurrentselectedYear2.equals(TempSpinner.getItemAtPosition(i).toString())) {
                             TempSpinner.setSelection(i);
@@ -439,8 +451,7 @@ public class MainActivity extends AppCompatActivity
                     case 3:
                     {
                         LinearLayout ll = (LinearLayout) findViewById(R.id.LLTop50);
-
-                        for (int i = 0; i < 50; i++)
+                        for (int i = 0; i < top.Top_50.length; i++)
                         {
                                 TextView txtV = (TextView) (((ViewGroup) ll.getChildAt(2+i)).getChildAt(0));
                                 txtV.setMovementMethod(LinkMovementMethod.getInstance());
