@@ -197,6 +197,15 @@ public class MainActivity extends AppCompatActivity
                     Spinner TypeSpinner = initGradeSpinner(1);
                     Spinner YearsSpinner = initGradeSpinner(2);
 
+                    host.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+                        @Override
+                        public void onTabChanged(String s) {
+                            if(s == "Top 50")
+                            {
+
+                            }
+                        }
+                    });
                 }
             });
             trans.replace(R.id.fragContainer, new gradesFragment()).commit();
