@@ -10,7 +10,7 @@ public class GWebAppInterface
 {
     private MainActivity MainActv;
 
-    GWebAppInterface(MainActivity context, E_Mails e)
+    GWebAppInterface(MainActivity context)
     {
         MainActv = context;
     }

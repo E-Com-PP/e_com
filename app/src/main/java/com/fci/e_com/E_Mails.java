@@ -31,7 +31,7 @@ public class E_Mails
         MainActv.webViewer.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView web, String url) {
-                web.loadUrl("GInter.makeToast();" +
+                web.loadUrl(
                         "javascript: var table = Array.prototype.slice.call(document.getElementsByTagName('tbody')[5].childNodes).slice(4);" +
                         "var tbs = '';" +
                         "for(var i = 0; i < table.length; i++)" +
