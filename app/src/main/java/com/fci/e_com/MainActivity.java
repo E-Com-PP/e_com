@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity
                         spec.setIndicator("Received Files");
                         host.addTab(spec);
 
-                        allMails.loadPage();
+                        allMails.loadPage(1);
                     }
                 });
                 trans.replace(R.id.fragContainer, new inboxFragment()).commit();
