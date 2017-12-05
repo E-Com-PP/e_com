@@ -160,7 +160,8 @@ public class MainActivity extends AppCompatActivity
                         spec.setContent(R.id.files);
                         spec.setIndicator("Received Files");
                         host.addTab(spec);
-                        //fillFragment(0, 4);
+
+                        allMails.loadPage();
                     }
                 });
                 trans.replace(R.id.fragContainer, new inboxFragment()).commit();
@@ -342,8 +343,6 @@ public class MainActivity extends AppCompatActivity
                     }
                     case 4:
                     {
-                        allMails.loadPage();
-
                         LinearLayout inboxLayout = (LinearLayout)findViewById(R.id.inbox);
                         inboxLayout.removeAllViews();
 
@@ -356,8 +355,8 @@ public class MainActivity extends AppCompatActivity
                             ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(1))).setText(allMails.e_mails.get(i).to);                            ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(0))).setText(allMails.e_mails.get(i).from);
                             ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(2))).setText(allMails.e_mails.get(i).date);
                             ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(3))).setText(allMails.e_mails.get(i).msg);
-
                         }
+                        Toast.makeText(MainActivity.this, "FILL", Toast.LENGTH_SHORT).show();
                         break;
                     }
                 }

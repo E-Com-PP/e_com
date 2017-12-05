@@ -42,6 +42,14 @@ public class GWebAppInterface
             MainActv.allMails.e_mails.add(new E_mail(inBetween[i], inBetween[i + 1], inBetween[i + 2], inBetween[i + 3], inBetween[i + 4], MainActv, varId));
             varId++;
         }
+        Toast.makeText(MainActv, "sendE_mails", Toast.LENGTH_SHORT).show();
+        MainActv.fillFragment(0, 4);
+    }
+
+    @JavascriptInterface
+    public void makeToast()
+    {
+        Toast.makeText(MainActv, "TOAST", Toast.LENGTH_SHORT).show();
     }
 
     @JavascriptInterface
