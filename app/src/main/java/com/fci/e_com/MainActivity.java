@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            //initGradeSpinner(1);
 //            if(GetFragClass() == newsFragment.class)
 //                fillFragment(News.size(), 0);
 //            else if(GetFragClass() == homeFragment.class)
@@ -192,8 +193,8 @@ public class MainActivity extends AppCompatActivity
                         handler.GetGrades(1, spin.getSelectedItem().toString());
                     else
                         handler.GetGradeYears(1);
-                    Spinner TypeSpinner=initGradeSpinner(1);
-                    Spinner YearsSpinner=initGradeSpinner(2);
+                    Spinner TypeSpinner = initGradeSpinner(1);
+                    Spinner YearsSpinner = initGradeSpinner(2);
 
                 }
             });
