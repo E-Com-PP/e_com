@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity
     public int loggedIn = 0;
     public boolean isInstantiated = false;
     String currSelectedYear = "";
+    String CurrentselectedYear2="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -298,7 +299,7 @@ public class MainActivity extends AppCompatActivity
                 TempSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                        currSelectedYear = parentView.getSelectedItem().toString();
+                        CurrentselectedYear2 = parentView.getSelectedItem().toString();
                         ((TextView) findViewById(R.id.rank_top50)).setText("Year " + Integer.toString(position+1));
                     }
 
@@ -310,9 +311,9 @@ public class MainActivity extends AppCompatActivity
                 });
                 TempSpinner.setAdapter(adap);
 
-                if (currSelectedYear != "") {
+                if (CurrentselectedYear2 != "") {
                     for (int i = 0; i < TempSpinner.getCount(); i++) {
-                        if (currSelectedYear.equals(TempSpinner.getItemAtPosition(i).toString())) {
+                        if (CurrentselectedYear2.equals(TempSpinner.getItemAtPosition(i).toString())) {
                             TempSpinner.setSelection(i);
                             break;
                         }
