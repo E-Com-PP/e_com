@@ -66,6 +66,8 @@ public class GWebAppInterface
                 counter++;
             }
         }
+        MainActv.fillFragment(0,3);
+
     }
 
     @JavascriptInterface

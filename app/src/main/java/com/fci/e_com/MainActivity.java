@@ -195,13 +195,14 @@ public class MainActivity extends AppCompatActivity
                     else
                         handler.GetGradeYears(1);
                     Spinner TypeSpinner = initGradeSpinner(1);
-                    Spinner YearsSpinner = initGradeSpinner(2);
+                    final Spinner YearsSpinner = initGradeSpinner(2);
 
                     host.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
                         @Override
                         public void onTabChanged(String s) {
                             if(s == "Top 50")
                             {
+                                top.getTop_50(Integer.getInteger(YearsSpinner.getSelectedItem().toString()),GInterface);
 
                             }
                         }
@@ -425,13 +426,13 @@ public class MainActivity extends AppCompatActivity
 
                         for (int i = 0; i < 50; i++)
                         {
-                                TextView txtV = (TextView) (((ViewGroup) ll.getChildAt(3+i)).getChildAt(0));
+                                TextView txtV = (TextView) (((ViewGroup) ll.getChildAt(2+i)).getChildAt(0));
                                 txtV.setMovementMethod(LinkMovementMethod.getInstance());
                                 txtV.setText(top.Top_50[i][0]);
-                                txtV = (TextView) (((ViewGroup) ll.getChildAt(3+i)).getChildAt(2));
+                                txtV = (TextView) (((ViewGroup) ll.getChildAt(2+i)).getChildAt(2));
                                 txtV.setMovementMethod(LinkMovementMethod.getInstance());
                                 txtV.setText(top.Top_50[i][2]);
-                                txtV = (TextView) (((ViewGroup) ll.getChildAt(3+i)).getChildAt(3));
+                                txtV = (TextView) (((ViewGroup) ll.getChildAt(2+i)).getChildAt(3));
                                 txtV.setMovementMethod(LinkMovementMethod.getInstance());
                                 txtV.setText(top.Top_50[i][3]);
 
