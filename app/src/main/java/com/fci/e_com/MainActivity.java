@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     public boolean isInstantiated = false;
     String currSelectedYear = "";
     String CurrentselectedYear2="";
+    String CurrentSelectedType="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,7 +195,7 @@ public class MainActivity extends AppCompatActivity
                         handler.GetGrades(1, spin.getSelectedItem().toString());
                     else
                         handler.GetGradeYears(1);
-                    Spinner TypeSpinner = initGradeSpinner(1);
+                    final Spinner TypeSpinner = initGradeSpinner(1);
                     final Spinner YearsSpinner = initGradeSpinner(2);
 
                     host.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
@@ -202,7 +203,8 @@ public class MainActivity extends AppCompatActivity
                         public void onTabChanged(String s) {
                             if(s == "Top 50")
                             {
-                                top.getTop_50(Integer.getInteger(YearsSpinner.getSelectedItem().toString()),GInterface);
+                                //top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),GInterface);
+                                top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),TypeSpinner.getSelectedItem().toString(),GInterface);
 
                             }
                         }
@@ -283,8 +285,8 @@ public class MainActivity extends AppCompatActivity
                 TempSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                        /*currSelectedYear = parentView.getSelectedItem().toString();
-                        ((TextView) findViewById(R.id.rank_top50)).setText("Year " + Integer.toString(parentView.getCount() - position));*/
+                        CurrentSelectedType = parentView.getSelectedItem().toString();
+                        //((TextView) findViewById(R.id.rank_top50)).setText("Year " + Integer.toString(parentView.getCount() - position));
                     }
 
                     @Override
@@ -294,6 +296,14 @@ public class MainActivity extends AppCompatActivity
 
                 });
                 TempSpinner.setAdapter(adap);
+                if (CurrentSelectedType != "") {
+                    for (int i = 0; i < TempSpinner.getCount(); i++) {
+                        if (CurrentSelectedType.equals(TempSpinner.getItemAtPosition(i).toString())) {
+                            TempSpinner.setSelection(i);
+                            break;
+                        }
+                    }
+                }
 
                 break;
 
@@ -429,10 +439,10 @@ public class MainActivity extends AppCompatActivity
                                 TextView txtV = (TextView) (((ViewGroup) ll.getChildAt(2+i)).getChildAt(0));
                                 txtV.setMovementMethod(LinkMovementMethod.getInstance());
                                 txtV.setText(top.Top_50[i][0]);
-                                txtV = (TextView) (((ViewGroup) ll.getChildAt(2+i)).getChildAt(2));
+                                txtV = (TextView) (((ViewGroup) ll.getChildAt(2+i)).getChildAt(1));
                                 txtV.setMovementMethod(LinkMovementMethod.getInstance());
                                 txtV.setText(top.Top_50[i][2]);
-                                txtV = (TextView) (((ViewGroup) ll.getChildAt(2+i)).getChildAt(3));
+                                txtV = (TextView) (((ViewGroup) ll.getChildAt(2+i)).getChildAt(2));
                                 txtV.setMovementMethod(LinkMovementMethod.getInstance());
                                 txtV.setText(top.Top_50[i][3]);
 
