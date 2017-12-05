@@ -30,7 +30,7 @@
                     android:textSize="18sp" />
 
                 <Spinner
-                    android:id="@+id/YearSpin"
+                    android:id="@+id/Top50YearSpin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"

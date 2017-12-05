@@ -287,7 +287,7 @@ public class MainActivity extends AppCompatActivity
 
             }
             case 2: {
-                TempSpinner = ((Spinner) findViewById(R.id.YearSpin));
+                TempSpinner = ((Spinner) findViewById(R.id.Top50YearSpin));
                 List<String>  Years=new ArrayList<String>();
                 Years.add("1");
                 Years.add("2");
