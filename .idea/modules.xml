@@ -3,7 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/e_com.iml" filepath="$PROJECT_DIR$/e_com.iml" />
+=======
+      <module fileurl="file://E:\My Projects\Android\E-Com++\e_com.iml" filepath="E:\My Projects\Android\E-Com++\e_com.iml" />
+>>>>>>> Prisoril-Ttarawa
     </modules>
   </component>
 </project>

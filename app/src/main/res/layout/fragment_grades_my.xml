@@ -11,6 +11,7 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/LLMyGrades"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -44,7 +45,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true" />
+                    android:layout_alignParentTop="true"
+                    android:entries="@string/prompt_email" />
 
             </RelativeLayout>
 
@@ -68,13 +70,13 @@
                     android:id="@+id/myGrades_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginEnd="30dp"
                     android:layout_marginRight="30dp"
-                    android:text="Total"
-                    android:textSize="16sp"
-                    android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/myGrades_grade"
-                    android:layout_toStartOf="@+id/myGrades_grade" />
+                    android:layout_toStartOf="@+id/myGrades_grade"
+                    android:text="Total"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/myGrades_grade"
@@ -99,20 +101,6 @@
                     android:textSize="16sp" />
 
             </RelativeLayout>
-
-            <include layout="@layout/grades_my_grades" />
-
-            <include layout="@layout/grades_my_grades" />
-
-            <include layout="@layout/grades_my_grades" />
-
-            <include layout="@layout/grades_my_grades" />
-
-            <include layout="@layout/grades_my_grades" />
-
-            <include layout="@layout/grades_my_grades" />
-
-            <include layout="@layout/grades_my_grades" />
 
             <include layout="@layout/grades_my_grades" />
 
