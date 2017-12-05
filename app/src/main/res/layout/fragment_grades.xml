@@ -51,7 +51,7 @@
 
 
                     <include
-                        layout="@layout/grades_top50"
+                        layout="@layout/fragment_grades_top"
                         layout_width="match_parent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
