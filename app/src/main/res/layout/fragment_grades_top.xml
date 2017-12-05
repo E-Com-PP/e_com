@@ -11,6 +11,7 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/LLTop50"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -29,7 +30,7 @@
                     android:textSize="18sp" />
 
                 <Spinner
-                    android:id="@+id/spinner3"
+                    android:id="@+id/YearSpin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -37,14 +38,14 @@
                     android:layout_alignParentTop="true" />
 
                 <Spinner
-                    android:id="@+id/spinner4"
+                    android:id="@+id/TypeSpin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_marginEnd="23dp"
                     android:layout_marginRight="23dp"
-                    android:layout_toLeftOf="@+id/spinner3"
-                    android:layout_toStartOf="@+id/spinner3" />
+                    android:layout_toLeftOf="@+id/YearSpin"
+                    android:layout_toStartOf="@+id/YearSpin" />
 
             </RelativeLayout>
 
@@ -89,25 +90,299 @@
 
             <include layout="@layout/grades_top50" />
 
-            <include layout="@layout/grades_top50" />
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            <include layout="@layout/grades_top50" />
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            <include layout="@layout/grades_top50" />
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            <include layout="@layout/grades_top50" />
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            <include layout="@layout/grades_top50" />
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            <include layout="@layout/grades_top50" />
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            <include layout="@layout/grades_top50" />
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            <include layout="@layout/grades_top50" />
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            <include layout="@layout/grades_top50" />
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            <include layout="@layout/grades_top50" />
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <include
+                layout="@layout/grades_top50"
+                layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
 
         </LinearLayout>

@@ -187,11 +187,14 @@ public class MainActivity extends AppCompatActivity
                     spec.setIndicator("Top 50");
                     host.addTab(spec);
 
-                    Spinner spin = initGradeSpinner();
+                    Spinner spin = initGradeSpinner(0);
                     if(spin.getSelectedItem() != null)
                         handler.GetGrades(1, spin.getSelectedItem().toString());
                     else
                         handler.GetGradeYears(1);
+                    Spinner TypeSpinner=initGradeSpinner(1);
+                    Spinner YearsSpinner=initGradeSpinner(2);
+
                 }
             });
             trans.replace(R.id.fragContainer, new gradesFragment()).commit();
@@ -222,43 +225,107 @@ public class MainActivity extends AppCompatActivity
         return getSupportFragmentManager().getFragments().get(0).getClass();
     }
 
-    Spinner initGradeSpinner()
+    Spinner initGradeSpinner(int SpinnerType)
     {
+        Spinner TempSpinner = null;
+        ArrayAdapter<String> adap;
+        switch(SpinnerType) {
+            case 0:
+                adap = new ArrayAdapter<String>(handler.MainActv, R.layout.support_simple_spinner_dropdown_item, handler.YearOptions);
+                TempSpinner = ((Spinner) findViewById(R.id.YearSpin));
 
-        ArrayAdapter<String> adap = new ArrayAdapter<String>(handler.MainActv, R.layout.support_simple_spinner_dropdown_item, handler.YearOptions);
+                TempSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                        currSelectedYear = parentView.getSelectedItem().toString();
+                        ((TextView) findViewById(R.id.myGrades_year)).setText("Year " + Integer.toString(parentView.getCount() - position));
+                    }
 
-        Spinner spin = ((Spinner)findViewById(R.id.spinner3));
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parentView) {
 
-        spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                currSelectedYear = parentView.getSelectedItem().toString();
-                ((TextView)findViewById(R.id.myGrades_year)).setText("Year " + Integer.toString(parentView.getCount() - position));
-            }
+                    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
+                });
+                TempSpinner.setAdapter(adap);
 
-            }
-
-        });
-
-        spin.setAdapter(adap);
-
-        if(currSelectedYear != "")
-        {
-            for(int i = 0; i < spin.getCount(); i++)
-            {
-                if(currSelectedYear.equals(spin.getItemAtPosition(i).toString()))
-                {
-                    spin.setSelection(i);
-                    break;
+                if (currSelectedYear != "") {
+                    for (int i = 0; i < TempSpinner.getCount(); i++) {
+                        if (currSelectedYear.equals(TempSpinner.getItemAtPosition(i).toString())) {
+                            TempSpinner.setSelection(i);
+                            break;
+                        }
+                    }
                 }
+                break;
+
+            case 1: {
+                TempSpinner = ((Spinner) findViewById(R.id.TypeSpin));
+                List<String>  DepartmentsType=new ArrayList<String>();
+                DepartmentsType.add("ALL");
+                DepartmentsType.add("CS");
+                DepartmentsType.add("IT");
+                DepartmentsType.add("IS");
+                DepartmentsType.add("DS");
+                adap = new ArrayAdapter<String>(handler.MainActv, R.layout.support_simple_spinner_dropdown_item,DepartmentsType);
+                TempSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                        /*currSelectedYear = parentView.getSelectedItem().toString();
+                        ((TextView) findViewById(R.id.rank_top50)).setText("Year " + Integer.toString(parentView.getCount() - position));*/
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parentView) {
+
+                    }
+
+                });
+                TempSpinner.setAdapter(adap);
+
+                break;
+
+            }
+            case 2: {
+                TempSpinner = ((Spinner) findViewById(R.id.YearSpin));
+                List<String>  Years=new ArrayList<String>();
+                Years.add("1");
+                Years.add("2");
+                Years.add("3");
+                Years.add("4");
+                adap = new ArrayAdapter<String>(handler.MainActv, R.layout.support_simple_spinner_dropdown_item, Years);
+                TempSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                        currSelectedYear = parentView.getSelectedItem().toString();
+                        ((TextView) findViewById(R.id.rank_top50)).setText("Year " + Integer.toString(position+1));
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parentView) {
+
+                    }
+
+                });
+                TempSpinner.setAdapter(adap);
+
+                if (currSelectedYear != "") {
+                    for (int i = 0; i < TempSpinner.getCount(); i++) {
+                        if (currSelectedYear.equals(TempSpinner.getItemAtPosition(i).toString())) {
+                            TempSpinner.setSelection(i);
+                            break;
+                        }
+                    }
+                }
+                break;
+
             }
         }
 
-        return spin;
+
+        return TempSpinner;
     }
+
 
     public void fillFragment(int num, int type)
     {
@@ -339,6 +406,26 @@ public class MainActivity extends AppCompatActivity
                             }
                         }
 
+                        break;
+                    }
+                    case 3:
+                    {
+                        LinearLayout ll = (LinearLayout) findViewById(R.id.LLTop50);
+
+                        for (int i = 0; i < 50; i++)
+                        {
+                                TextView txtV = (TextView) (((ViewGroup) ll.getChildAt(3+i)).getChildAt(0));
+                                txtV.setMovementMethod(LinkMovementMethod.getInstance());
+                                txtV.setText(top.Top_50[i][0]);
+                                txtV = (TextView) (((ViewGroup) ll.getChildAt(3+i)).getChildAt(2));
+                                txtV.setMovementMethod(LinkMovementMethod.getInstance());
+                                txtV.setText(top.Top_50[i][2]);
+                                txtV = (TextView) (((ViewGroup) ll.getChildAt(3+i)).getChildAt(3));
+                                txtV.setMovementMethod(LinkMovementMethod.getInstance());
+                                txtV.setText(top.Top_50[i][3]);
+
+
+                        }
                         break;
                     }
                     case 4:
