@@ -23,6 +23,7 @@ public class WebHandler {
     {
         MainActv.webViewer = MainActv.findViewById(R.id.wv1);
         MainActv.webInterface = new WebAppInterface(MainActv);
+        MainActv.GInterface = new GWebAppInterface(MainActv);
 
         MainActv.webViewer.addJavascriptInterface(MainActv.webInterface, "Android");
         MainActv.webViewer.addJavascriptInterface(MainActv.GInterface, "GInter");
