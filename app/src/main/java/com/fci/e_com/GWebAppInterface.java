@@ -39,7 +39,12 @@ public class GWebAppInterface
 
         for (int i = 0; i < inBetween.length; i += 5)
         {
-            MainActv.allMails.e_mails.add(new E_mail(inBetween[i].trim(), inBetween[i + 1].trim(), inBetween[i + 2].trim(), inBetween[i + 3].trim(), inBetween[i + 4].trim(), MainActv, varId));
+            MainActv.allMails.e_mails.add(new E_mail(inBetween[i].trim(),
+                                                     inBetween[i + 1].trim(),
+                                                     inBetween[i + 2].trim(),
+                                                     inBetween[i + 3].trim(),
+                                                     inBetween[i + 4].trim(),
+                                                     MainActv, varId));
             varId++;
         }
         MainActv.fillFragment(0, 4);

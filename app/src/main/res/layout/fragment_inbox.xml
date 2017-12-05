@@ -29,24 +29,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:id="@+id/inbox"
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:id="@+id/inbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                    </LinearLayout>
+                </ScrollView>
 
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/files"
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-
-                </LinearLayout>
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:id="@+id/files"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                    </LinearLayout>
+                </ScrollView>
 
                 <LinearLayout
                     android:id="@+id/outbox"
