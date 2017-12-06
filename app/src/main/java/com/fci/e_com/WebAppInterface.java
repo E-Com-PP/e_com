@@ -31,6 +31,8 @@ public class WebAppInterface {
     public void sendNews(String dataz)
     {
         MainActivity MainActv = ((MainActivity)mContext);
+        MainActv.Synchro.TaskDone();
+
         String[] dataA = dataz.split("±");
         List<NewsObj> result = new ArrayList<NewsObj>();
 
@@ -51,6 +53,8 @@ public class WebAppInterface {
     @JavascriptInterface
     public void sendGrades(String dataz)
     {
+        ((MainActivity)mContext).Synchro.TaskDone();
+
         List<Grade> Grades = new ArrayList<Grade>();
         String[] courses = dataz.split("±");
 
@@ -74,6 +78,8 @@ public class WebAppInterface {
     @JavascriptInterface
     public void UserDataShow()
     {
+        ((MainActivity)mContext).Synchro.TaskDone();
+
         MainActivity MainActv = ((MainActivity)mContext);
         MainActv.user = new UserSettings(MainActv.webInterface.data);
 
@@ -83,12 +89,15 @@ public class WebAppInterface {
     }
 
     @JavascriptInterface
-    public void AddOption(String option)
+    public void AddOptions(String option)
     {
         MainActivity MainActv = (MainActivity)mContext;
-        MainActv.handler.YearOptions.add(option);
 
+        MainActv.Synchro.TaskDone();
+        String[] options = option.split("╖");
 
-
+        for(int i = 0; i < options.length; i++) {
+            MainActv.handler.YearOptions.add(options[i]);
+        }
     }
 }

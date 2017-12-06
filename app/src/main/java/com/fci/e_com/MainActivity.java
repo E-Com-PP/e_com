@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 import layout.gradesFragment;
 import layout.gradesMyFragment;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity
     Top_50 top;
     WebAppInterface webInterface;
     GWebAppInterface GInterface;
+    Synchronizer Synchro = new Synchronizer(this, 500);
 
     public UserSettings user;
     public List<NewsObj> News = new ArrayList<NewsObj>();
@@ -70,6 +72,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Timer t = new Timer();
+        t.schedule(Synchro, 0, Synchro.IntervalMS);
 
         allMails = new E_Mails(this);
         top = new Top_50(this);
@@ -112,6 +117,26 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Synchro.AddTask(new NetTask(){
+                @Override
+                public void run() {
+                    handler.GetGrades(1, "17");
+                }}, false);
+            Synchro.AddTask(new NetTask(){
+                @Override
+                public void run() {
+                    handler.GetGrades(1, "17");
+                }}, false);
+            Synchro.AddTask(new NetTask(){
+                @Override
+                public void run() {
+                    handler.GetGrades(1, "17");
+                }}, false);
+            Synchro.AddTask(new NetTask(){
+                @Override
+                public void run() {
+                    handler.GetGrades(1, "17");
+                }}, false);
 //            if(GetFragClass() == newsFragment.class)
 //                fillFragment(News.size(), 0);
 //            else if(GetFragClass() == homeFragment.class)
@@ -139,7 +164,12 @@ public class MainActivity extends AppCompatActivity
             trans.runOnCommit(new Runnable() {
                                   @Override
                                   public void run() {
-                                      handler.GetNews();
+                                      Synchro.AddTask(new NetTask(){
+                                          @Override
+                                          public void run()
+                                          {
+                                              handler.GetNews();
+                                          }}, false);
                                   }
                               });
             trans.replace(R.id.fragContainer, new homeFragment()).commit();
@@ -162,7 +192,11 @@ public class MainActivity extends AppCompatActivity
                         spec.setIndicator("Received Files");
                         host.addTab(spec);
 
-                        allMails.loadPage();
+                        Synchro.AddTask(new NetTask(){
+                            @Override
+                            public void run() {
+                                allMails.loadPage();
+                            }}, false);
                     }
                 });
                 trans.replace(R.id.fragContainer, new inboxFragment()).commit();
@@ -188,11 +222,19 @@ public class MainActivity extends AppCompatActivity
                     spec.setIndicator("Top 50");
                     host.addTab(spec);
 
-                    Spinner spin = initGradeSpinner();
+                    final Spinner spin = initGradeSpinner();
                     if(spin.getSelectedItem() != null)
-                        handler.GetGrades(1, spin.getSelectedItem().toString());
+                        Synchro.AddTask(new NetTask(){
+                            @Override
+                            public void run() {
+                                handler.GetGrades(1, spin.getSelectedItem().toString());
+                            }}, false);
                     else
-                        handler.GetGradeYears(1);
+                        Synchro.AddTask(new NetTask(){
+                            @Override
+                            public void run() {
+                                handler.GetGradeYears(1);
+                            }}, false);
                 }
             });
             trans.replace(R.id.fragContainer, new gradesFragment()).commit();
@@ -201,7 +243,11 @@ public class MainActivity extends AppCompatActivity
             trans.runOnCommit(new Runnable() {
                 @Override
                 public void run() {
-                    handler.GetNews();
+                    Synchro.AddTask(new NetTask(){
+                        @Override
+                        public void run() {
+                            handler.GetNews();
+                        }}, false);
                 }
             });
             trans.replace(R.id.fragContainer, new newsFragment()).commit();
@@ -356,7 +402,11 @@ public class MainActivity extends AppCompatActivity
                             ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(3))).setText(allMails.e_mails.get(i).msg);
                         }
 
-                        allMails.sendFiles();
+                        Synchro.AddTask(new NetTask(){
+                            @Override
+                            public void run() {
+                                allMails.sendFiles();
+                            }}, false);
                         break;
                     }
                     case 5:
