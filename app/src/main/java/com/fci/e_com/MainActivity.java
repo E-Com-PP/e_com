@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity
                     host.addTab(spec);
 
 
-                    final Spinner spin = initGradeSpinner();
+                    final Spinner spin = initGradeSpinner(0);
                     if(spin.getSelectedItem() != null)
                         Synchro.AddTask(new NetTask(){
                             @Override
@@ -252,8 +252,11 @@ public class MainActivity extends AppCompatActivity
                             if(s == "Top 50")
                             {
                                 //top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),GInterface);
-                                top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),TypeSpinner.getSelectedItem().toString(),GInterface);
-
+                                Synchro.AddTask(new NetTask(){
+                                    @Override
+                                    public void run() {
+                                        top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()), TypeSpinner.getSelectedItem().toString(), GInterface);
+                                    }}, false);
                             }
                         }
                     });
