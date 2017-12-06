@@ -10,7 +10,7 @@ import java.util.Map;
 public class Top_50
 {
     Map<String, String> deps = new HashMap<String, String>();
-    String[][] Top_50 = new String[50][5];
+    String[][] Top_50;
     MainActivity MainActv;
 
     Top_50(MainActivity c)
@@ -20,11 +20,11 @@ public class Top_50
 
     public void getTop_50(final int year, final String dep, GWebAppInterface webInterface)
     {
-        deps.put("all", "3");
-        deps.put("cs", "5");
-        deps.put("it", "7");
-        deps.put("is", "9");
-        deps.put("ds", "11");
+        deps.put("ALL", "3");
+        deps.put("CS", "5");
+        deps.put("IT", "7");
+        deps.put("IS", "9");
+        deps.put("DS", "11");
 
         MainActv.webViewer.loadUrl("https://my.fci-cu.edu.eg/content.php?pg=top50.php");
         MainActv.webViewer.setWebViewClient(new WebViewClient()
@@ -51,7 +51,7 @@ public class Top_50
                                 "tbs += '|';" +
                                 "}" +
                                 "}" +
-                                "Android.send(tbs);");
+                                "GInter.send(tbs);");
                     }
                 });
             }
@@ -84,7 +84,7 @@ public class Top_50
                                 "tbs += '|';" +
                                 "}" +
                                 "}" +
-                                "Android.send(tbs);");
+                                "GInter.send(tbs);");
                     }
                 });
             }

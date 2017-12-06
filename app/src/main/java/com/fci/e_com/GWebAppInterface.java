@@ -67,7 +67,9 @@ public class GWebAppInterface
         int counter = 0;
         String[] inBetween = s.split("\\|");
 
-        for (int i = 0; i < 50; i++)
+        MainActv.top.Top_50 = new String[inBetween.length/5][5];
+
+        for (int i = 0; i < inBetween.length/5; i++)
         {
             for (int j = 0; j < 5; j++)
             {
@@ -75,6 +77,8 @@ public class GWebAppInterface
                 counter++;
             }
         }
+        MainActv.fillFragment(MainActv.GraterThan2,3);
+
     }
 
     @JavascriptInterface

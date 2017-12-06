@@ -41,9 +41,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <include
-                layout="@layout/home_inbox"
-                android:layout_width="100dp" />
+            <include layout="@layout/home_inbox"/>
 
             <include layout="@layout/home_inbox" />
 
