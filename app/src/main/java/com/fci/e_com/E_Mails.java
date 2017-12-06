@@ -38,7 +38,6 @@ public class E_Mails
                         "tbs += table[i].childNodes[1].textContent + '|' + table[i].childNodes[3].firstChild.textContent + '|' + table[i].childNodes[5].textContent + '|' + table[i].childNodes[7].textContent + '|'" +
                         "+ table[i].childNodes[3].firstChild.href + '|';" +
                         "GInter.sendE_mails(tbs);");
-                Toast.makeText(MainActv, "LOADPAGE", Toast.LENGTH_SHORT).show();
             }
         });
     }
