@@ -40,7 +40,7 @@
                     android:textSize="14sp" />
 
                 <Spinner
-                    android:id="@+id/spinner3"
+                    android:id="@+id/YearSpin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
