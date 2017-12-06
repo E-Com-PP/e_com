@@ -55,8 +55,11 @@ public class MainActivity extends AppCompatActivity
     String currSelectedYear = "";
     String CurrentselectedYear2="";
     String CurrentSelectedType="";
+    String UserPassword="";
+    String Name="";
     int GraterThan2 =0;
     boolean EqualALl=true;
+    LogIn MyLogIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,17 +79,20 @@ public class MainActivity extends AppCompatActivity
 
         allMails = new E_Mails(this);
         top = new Top_50(this);
+        Bundle bundle = getIntent().getExtras();
+         Name = bundle.getString("NameStr");
+        UserPassword = bundle.getString("PasswordStr");
+
+
     }
 
     @Override
     protected void onResume()
     {
         super.onResume();
+        handler.StartUp();
 
-        if(loggedIn == 0) {
-            handler.MainActv = this;
-            handler.StartUp();
-        }
+
     }
 
     @Override

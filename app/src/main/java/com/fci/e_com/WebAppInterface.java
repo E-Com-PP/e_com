@@ -68,7 +68,7 @@ public class WebAppInterface {
     {
         MainActivity MA = ((MainActivity)mContext);
         MA.loggedIn = (logged.equals("true")) ? 1 : 0;
-        MA.handler.Login("20160124", "testing123");
+        MA.handler.Login(MA.Name, MA.UserPassword);
     }
 
     @JavascriptInterface
