@@ -10,7 +10,7 @@ import java.util.Map;
 public class Top_50
 {
     Map<String, String> deps = new HashMap<String, String>();
-    String[][] Top_50 = new String[50][5];
+    String[][] Top_50;
     MainActivity MainActv;
 
     Top_50(MainActivity c)

@@ -448,10 +448,26 @@ public class MainActivity extends AppCompatActivity
 
                         break;
                     }
+                    //Top50 Fragment
                     case 3:
                     {
                         LinearLayout ll = (LinearLayout) findViewById(R.id.LLTop50);
-                        for (int i = 0; i < top.Top_50.length; i++)
+                        int sizeT = top.Top_50.length;
+
+                        if(sizeT != 50)
+                        {
+                            int tempSize =  ll.getChildCount() - 2;
+                            for(int z = 0; z < tempSize; z++)
+                            {
+                                ll.removeViewAt(2);
+                            }
+                            for(int z = 0; z < sizeT; z++)
+                            {
+                                infl.inflate(R.layout.grades_top50, (ViewGroup)ll);
+                            }
+                        }
+
+                        for (int i = 0; i < sizeT; i++)
                         {
                                 TextView txtV = (TextView) (((ViewGroup) ll.getChildAt(2+i)).getChildAt(0));
                                 txtV.setMovementMethod(LinkMovementMethod.getInstance());
@@ -462,8 +478,6 @@ public class MainActivity extends AppCompatActivity
                                 txtV = (TextView) (((ViewGroup) ll.getChildAt(2+i)).getChildAt(2));
                                 txtV.setMovementMethod(LinkMovementMethod.getInstance());
                                 txtV.setText(top.Top_50[i][3+num]);
-
-
                         }
                         break;
                     }
