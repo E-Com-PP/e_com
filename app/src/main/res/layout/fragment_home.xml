@@ -36,6 +36,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="Recent Inbox"
+                android:paddingLeft="10dp"
+                android:paddingBottom="5dp"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="#000"
                 android:textSize="15sp"
@@ -48,13 +50,14 @@
             <include layout="@layout/home_inbox" />
 
             <TextView
-
+                android:id="@+id/viewMoreInbox"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="View More"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:textColor="#47525E"
+                android:layout_margin="5dp"
+                android:textColor="@color/colorHighlightText"
+                android:textStyle="bold"
                 android:textSize="14sp" />
 
             <TextView
@@ -63,14 +66,20 @@
                 android:layout_marginTop="6dp"
                 android:gravity="center_vertical"
                 android:text="News"
+                android:paddingLeft="10dp"
+                android:paddingBottom="5dp"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="#000"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
+
             <include layout="@layout/home_news" />
 
             <include layout="@layout/home_news" />
+
+            <include layout="@layout/home_news" />
+
 
         </LinearLayout>
 
