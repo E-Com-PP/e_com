@@ -4,6 +4,7 @@ import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public class UserSettings {
         int Level = 0;
         String MajorTrack = "";
         String Minor = "";
-        List<Grade> Grades;
+        List<Grade> Grades = new ArrayList<>();
 
         public UserSettings(String DataString)
         {

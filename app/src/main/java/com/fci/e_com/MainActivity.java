@@ -2,6 +2,7 @@ package com.fci.e_com;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity
     String Name="";
     int GraterThan2 =0;
     boolean EqualALl=true;
-    LogIn MyLogIn;
+    public LogIn MyLogIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -234,7 +235,9 @@ public class MainActivity extends AppCompatActivity
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, placeholder).commit();
         }
         else if (id == R.id.nav_logout) {
-            //getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, placeholder).commit();
+            Intent LogOutIntent = new Intent(this, LogIn.class);
+            startActivity(LogOutIntent);
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

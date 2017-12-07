@@ -15,42 +15,30 @@ public class LogIn extends AppCompatActivity {
     private EditText Password;
     private Button LogInBnt;
     @Override
-    protected void onCreate(Bundle savedInstance)
-    {
+    protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
         setContentView(R.layout.activity_login);
-        Name=(EditText)findViewById(R.id.email);
-        Password=(EditText)findViewById(R.id.password);
-        LogInBnt=(Button)findViewById(R.id.email_sign_in_button);
-        LogInBnt.setOnClickListener(new View.OnClickListener()
-        {
+        Name = (EditText) findViewById(R.id.email);
+        Password = (EditText) findViewById(R.id.password);
+        LogInBnt = (Button) findViewById(R.id.email_sign_in_button);
+        LogInBnt.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                NameStr=Name.getText().toString();
-                PasswordStr=Password.getText().toString();
+            public void onClick(View view) {
+                NameStr = Name.getText().toString();
+                PasswordStr = Password.getText().toString();
 
-                login(true);
-
+                SwitchActivity();
             }
 
 
-
         });
-
     }
-    public void login(boolean ValidLogIn)
+    public void SwitchActivity()
     {
-        if (ValidLogIn)
-        {
-            Intent intent=new Intent(this,MainActivity.class);
-            intent.putExtra("NameStr", NameStr);
-            intent.putExtra("PasswordStr",PasswordStr);
-            startActivity(intent);
-
-        }
-
-
+        Intent intent=new Intent(this, MainActivity.class);
+        intent.putExtra("NameStr", NameStr);
+        intent.putExtra("PasswordStr",PasswordStr);
+        startActivity(intent);
     }
     public String getEmail(){return NameStr;}
     public String getPassword(){return PasswordStr;}

@@ -1,6 +1,7 @@
 package com.fci.e_com;
 
 import android.content.Context;
+import android.content.Intent;
 import android.webkit.JavascriptInterface;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
@@ -49,6 +50,23 @@ public class WebAppInterface {
     }
 
     @JavascriptInterface
+    public void isValidLogin(String valid)
+    {
+        MainActivity ma = (MainActivity)mContext;
+        if(valid.equals("true"))
+        {
+            ma.loggedIn = 1;
+
+            Toast.makeText(ma, "Logged in", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Intent LogOutIntent = new Intent(ma, LogIn.class);
+            ma.startActivity(LogOutIntent);
+        }
+    }
+
+    @JavascriptInterface
     public void sendGrades(String dataz)
     {
         List<Grade> Grades = new ArrayList<Grade>();
@@ -87,8 +105,5 @@ public class WebAppInterface {
     {
         MainActivity MainActv = (MainActivity)mContext;
         MainActv.handler.YearOptions.add(option);
-
-
-
     }
 }
