@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity
                     host.addTab(spec);
 
 
-                    final Spinner spin = initGradeSpinner();
+                    final Spinner spin = initGradeSpinner(0);
                     if(spin.getSelectedItem() != null)
                         Synchro.AddTask(new NetTask(){
                             @Override
