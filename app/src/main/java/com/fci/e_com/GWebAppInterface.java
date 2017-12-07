@@ -18,6 +18,8 @@ public class GWebAppInterface
     @JavascriptInterface
     public void sendPeople(String people)
     {
+        MainActv.Synchro.TaskDone();
+
         Map<String, String> op = new HashMap<String, String>();
 
         String[] inBetween = people.split("\\|");
@@ -33,6 +35,8 @@ public class GWebAppInterface
     @JavascriptInterface
     public void sendE_mails(String allMails)
     {
+        MainActv.Synchro.TaskDone();
+
         String[] inBetween = allMails.split("\\|");
 
         int varId = (MainActv.allMails.e_mailsPageNumber - 1) * 50;
@@ -59,10 +63,13 @@ public class GWebAppInterface
     @JavascriptInterface
     public void send(String s)
     {
+        MainActv.Synchro.TaskDone();
         int counter = 0;
         String[] inBetween = s.split("\\|");
 
-        for (int i = 0; i < 50; i++)
+        MainActv.top.Top_50 = new String[inBetween.length/5][5];
+
+        for (int i = 0; i < inBetween.length/5; i++)
         {
             for (int j = 0; j < 5; j++)
             {
@@ -70,11 +77,15 @@ public class GWebAppInterface
                 counter++;
             }
         }
+        MainActv.fillFragment(MainActv.GraterThan2,3);
+
     }
 
     @JavascriptInterface
     public void sendAdditionalInfo(String delete, String reply, String message, String e_mailId)
     {
+        MainActv.Synchro.TaskDone();
+
         int intId = Integer.parseInt(e_mailId);
         MainActv.allMails.e_mails.get(intId).deleteURL = delete;
         MainActv.allMails.e_mails.get(intId).replyURL = reply;
@@ -84,6 +95,8 @@ public class GWebAppInterface
     @JavascriptInterface
     public void sendFilesData(String filesData)
     {
+        MainActv.Synchro.TaskDone();
+
         String[] inBetween = filesData.split("\\|");
 
         for (int i = 0; i < inBetween.length; i += 5)

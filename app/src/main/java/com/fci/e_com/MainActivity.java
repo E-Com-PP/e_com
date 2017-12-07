@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 import layout.gradesFragment;
 import layout.gradesMyFragment;
@@ -48,12 +49,17 @@ public class MainActivity extends AppCompatActivity
     Top_50 top;
     WebAppInterface webInterface;
     GWebAppInterface GInterface;
+    Synchronizer Synchro = new Synchronizer(this, 500);
 
     public UserSettings user;
     public List<NewsObj> News = new ArrayList<NewsObj>();
     public int loggedIn = 0;
     public boolean isInstantiated = false;
     String currSelectedYear = "";
+    String CurrentselectedYear2="";
+    String CurrentSelectedType="";
+    int GraterThan2 =0;
+    boolean EqualALl=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +76,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Timer t = new Timer();
+        t.schedule(Synchro, 0, Synchro.IntervalMS);
 
         allMails = new E_Mails(this);
         top = new Top_50(this);
@@ -112,6 +121,27 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Synchro.AddTask(new NetTask(){
+                @Override
+                public void run() {
+                    handler.GetGrades(1, "17");
+                }}, false);
+            Synchro.AddTask(new NetTask(){
+                @Override
+                public void run() {
+                    handler.GetGrades(1, "17");
+                }}, false);
+            Synchro.AddTask(new NetTask(){
+                @Override
+                public void run() {
+                    handler.GetGrades(1, "17");
+                }}, false);
+            Synchro.AddTask(new NetTask(){
+                @Override
+                public void run() {
+                    handler.GetGrades(1, "17");
+                }}, false);
+
 //            if(GetFragClass() == newsFragment.class)
 //                fillFragment(News.size(), 0);
 //            else if(GetFragClass() == homeFragment.class)
@@ -139,7 +169,12 @@ public class MainActivity extends AppCompatActivity
             trans.runOnCommit(new Runnable() {
                                   @Override
                                   public void run() {
-                                      handler.GetNews();
+                                      Synchro.AddTask(new NetTask(){
+                                          @Override
+                                          public void run()
+                                          {
+                                              handler.GetNews();
+                                          }}, false);
                                   }
                               });
             trans.replace(R.id.fragContainer, new homeFragment()).commit();
@@ -162,7 +197,11 @@ public class MainActivity extends AppCompatActivity
                         spec.setIndicator("Received Files");
                         host.addTab(spec);
 
-                        allMails.loadPage(1);
+                        Synchro.AddTask(new NetTask(){
+                            @Override
+                            public void run() {
+                                allMails.loadPage(1);
+                            }}, false);
                     }
                 });
                 trans.replace(R.id.fragContainer, new inboxFragment()).commit();
@@ -188,11 +227,37 @@ public class MainActivity extends AppCompatActivity
                     spec.setIndicator("Top 50");
                     host.addTab(spec);
 
-                    Spinner spin = initGradeSpinner();
+
+                    final Spinner spin = initGradeSpinner(0);
                     if(spin.getSelectedItem() != null)
-                        handler.GetGrades(1, spin.getSelectedItem().toString());
+                        Synchro.AddTask(new NetTask(){
+                            @Override
+                            public void run() {
+                                handler.GetGrades(1, spin.getSelectedItem().toString());
+                            }}, false);
                     else
-                        handler.GetGradeYears(1);
+
+                        Synchro.AddTask(new NetTask(){
+                            @Override
+                            public void run() {
+                                handler.GetGradeYears(1);
+                            }}, false);
+
+                    final Spinner TypeSpinner = initGradeSpinner(1);
+                    final Spinner YearsSpinner = initGradeSpinner(2);
+
+                    host.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+                        @Override
+                        public void onTabChanged(String s) {
+                            if(s == "Top 50")
+                            {
+                                //top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),GInterface);
+                                top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),TypeSpinner.getSelectedItem().toString(),GInterface);
+
+                            }
+                        }
+                    });
+
                 }
             });
             trans.replace(R.id.fragContainer, new gradesFragment()).commit();
@@ -201,7 +266,11 @@ public class MainActivity extends AppCompatActivity
             trans.runOnCommit(new Runnable() {
                 @Override
                 public void run() {
-                    handler.GetNews();
+                    Synchro.AddTask(new NetTask(){
+                        @Override
+                        public void run() {
+                            handler.GetNews();
+                        }}, false);
                 }
             });
             trans.replace(R.id.fragContainer, new newsFragment()).commit();
@@ -223,43 +292,131 @@ public class MainActivity extends AppCompatActivity
         return getSupportFragmentManager().getFragments().get(0).getClass();
     }
 
-    Spinner initGradeSpinner()
+    Spinner initGradeSpinner(int SpinnerType)
     {
+        Spinner TempSpinner = null;
+        ArrayAdapter<String> adap;
+        switch(SpinnerType) {
+            case 0:
+                adap = new ArrayAdapter<String>(handler.MainActv, R.layout.support_simple_spinner_dropdown_item, handler.YearOptions);
+                TempSpinner = ((Spinner) findViewById(R.id.YearSpin));
 
-        ArrayAdapter<String> adap = new ArrayAdapter<String>(handler.MainActv, R.layout.support_simple_spinner_dropdown_item, handler.YearOptions);
+                TempSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                        currSelectedYear = parentView.getSelectedItem().toString();
+                        ((TextView) findViewById(R.id.myGrades_year)).setText("Year " + Integer.toString(parentView.getCount() - position));
+                    }
 
-        Spinner spin = ((Spinner)findViewById(R.id.spinner3));
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parentView) {
 
-        spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                currSelectedYear = parentView.getSelectedItem().toString();
-                ((TextView)findViewById(R.id.myGrades_year)).setText("Year " + Integer.toString(parentView.getCount() - position));
-            }
+                    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
+                });
+                TempSpinner.setAdapter(adap);
 
-            }
-
-        });
-
-        spin.setAdapter(adap);
-
-        if(currSelectedYear != "")
-        {
-            for(int i = 0; i < spin.getCount(); i++)
-            {
-                if(currSelectedYear.equals(spin.getItemAtPosition(i).toString()))
-                {
-                    spin.setSelection(i);
-                    break;
+                if (currSelectedYear != "") {
+                    for (int i = 0; i < TempSpinner.getCount(); i++) {
+                        if (currSelectedYear.equals(TempSpinner.getItemAtPosition(i).toString())) {
+                            TempSpinner.setSelection(i);
+                            break;
+                        }
+                    }
                 }
+                break;
+
+            case 1: {
+                TempSpinner = ((Spinner) findViewById(R.id.TypeSpin));
+                List<String>  DepartmentsType=new ArrayList<String>();
+                DepartmentsType.add("ALL");
+                DepartmentsType.add("CS");
+                DepartmentsType.add("IT");
+                DepartmentsType.add("IS");
+                DepartmentsType.add("DS");
+                adap = new ArrayAdapter<String>(handler.MainActv, R.layout.support_simple_spinner_dropdown_item,DepartmentsType);
+                TempSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                        CurrentSelectedType = parentView.getSelectedItem().toString();
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parentView) {
+
+                    }
+
+                });
+                TempSpinner.setAdapter(adap);
+                if (CurrentSelectedType != "") {
+                    if (CurrentSelectedType!="ALL")
+                    {
+                        EqualALl=true;
+
+                    }
+                    else {EqualALl=false;}
+                    for (int i = 0; i < TempSpinner.getCount(); i++) {
+                        if (CurrentSelectedType.equals(TempSpinner.getItemAtPosition(i).toString())) {
+                            TempSpinner.setSelection(i);
+                            break;
+                        }
+                    }
+                }
+
+
+                break;
+
+            }
+            case 2: {
+                TempSpinner = ((Spinner) findViewById(R.id.Top50YearSpin));
+                List<String>  Years=new ArrayList<String>();
+                Years.add("1");
+                Years.add("2");
+                Years.add("3");
+                Years.add("4");
+                adap = new ArrayAdapter<String>(handler.MainActv, R.layout.support_simple_spinner_dropdown_item, Years);
+                TempSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                        CurrentselectedYear2 = parentView.getSelectedItem().toString();
+                        ((TextView) findViewById(R.id.rank_top50)).setText("Year " + Integer.toString(position+1));
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parentView) {
+
+                    }
+
+                });
+                TempSpinner.setAdapter(adap);
+
+                if (CurrentselectedYear2 != "") {
+                    if((CurrentselectedYear2=="3"||CurrentselectedYear2=="4")&&!EqualALl)
+                    {
+
+                       GraterThan2=1;
+                    }
+                    else
+                        {
+                            GraterThan2=0;
+                        }
+                    for (int i = 0; i < TempSpinner.getCount(); i++) {
+                        if (CurrentselectedYear2.equals(TempSpinner.getItemAtPosition(i).toString())) {
+                            TempSpinner.setSelection(i);
+                            break;
+                        }
+                    }
+                }
+                break;
+
             }
         }
 
-        return spin;
+
+        return TempSpinner;
     }
+
 
     public void fillFragment(int num, int type)
     {
@@ -342,6 +499,39 @@ public class MainActivity extends AppCompatActivity
 
                         break;
                     }
+                    //Top50 Fragment
+                    case 3:
+                    {
+                        LinearLayout ll = (LinearLayout) findViewById(R.id.LLTop50);
+                        int sizeT = top.Top_50.length;
+
+                        if(sizeT != 50)
+                        {
+                            int tempSize =  ll.getChildCount() - 2;
+                            for(int z = 0; z < tempSize; z++)
+                            {
+                                ll.removeViewAt(2);
+                            }
+                            for(int z = 0; z < sizeT; z++)
+                            {
+                                infl.inflate(R.layout.grades_top50, (ViewGroup)ll);
+                            }
+                        }
+
+                        for (int i = 0; i < sizeT; i++)
+                        {
+                                TextView txtV = (TextView) (((ViewGroup) ll.getChildAt(2+i)).getChildAt(0));
+                                txtV.setMovementMethod(LinkMovementMethod.getInstance());
+                                txtV.setText(top.Top_50[i][0]);
+                                txtV = (TextView) (((ViewGroup) ll.getChildAt(2+i)).getChildAt(1));
+                                txtV.setMovementMethod(LinkMovementMethod.getInstance());
+                                txtV.setText(top.Top_50[i][2]);
+                                txtV = (TextView) (((ViewGroup) ll.getChildAt(2+i)).getChildAt(2));
+                                txtV.setMovementMethod(LinkMovementMethod.getInstance());
+                                txtV.setText(top.Top_50[i][3+num]);
+                        }
+                        break;
+                    }
                     case 4:
                     {
                         LinearLayout inboxLayout = (LinearLayout)((ViewGroup)findViewById(R.id.inbox)).getChildAt(0);
@@ -356,7 +546,11 @@ public class MainActivity extends AppCompatActivity
                             ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(3))).setText(allMails.e_mails.get(i).msg);
                         }
 
-                        allMails.sendFiles();
+                        Synchro.AddTask(new NetTask(){
+                            @Override
+                            public void run() {
+                                allMails.sendFiles();
+                            }}, false);
                         break;
                     }
                     case 5:
