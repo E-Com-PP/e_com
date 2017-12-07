@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/E-Com++.iml" filepath="$PROJECT_DIR$/E-Com++.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://E:\My Projects\Android\E-Com++\e_com.iml" filepath="E:\My Projects\Android\E-Com++\e_com.iml" />
     </modules>
   </component>
 </project>

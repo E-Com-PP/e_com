@@ -105,8 +105,6 @@
             android:inputType="textPassword"
             android:maxLines="1"
             android:singleLine="true" />
-
-
     </RelativeLayout>
 
 
