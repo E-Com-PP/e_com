@@ -53,7 +53,8 @@ public class WebAppInterface {
     @JavascriptInterface
     public void sendGrades(String dataz)
     {
-        ((MainActivity)mContext).Synchro.TaskDone();
+        MainActivity ma = ((MainActivity)mContext);
+        ma.Synchro.TaskDone();
 
         List<Grade> Grades = new ArrayList<Grade>();
         String[] courses = dataz.split("±");
@@ -63,8 +64,10 @@ public class WebAppInterface {
             Grades.add(new Grade(courses[i]));
         }
 
-        ((MainActivity)mContext).user.Grades = Grades;
-        ((MainActivity) mContext).fillFragment(Grades.size(), 2);
+        //ma.ops.createGradesTable(ma.Grades);
+
+        ma.user.Grades = Grades;
+        ma.fillFragment(Grades.size(), 2);
     }
 
     @JavascriptInterface
