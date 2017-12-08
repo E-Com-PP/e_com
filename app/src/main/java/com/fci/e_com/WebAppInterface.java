@@ -68,6 +68,7 @@ public class WebAppInterface {
         else
         {
             //ma.ShowDialogProgress(false);
+            Toast.makeText(ma, "Authentication Failed. Please try entering your username and password again.", Toast.LENGTH_LONG).show();
             Intent LogOutIntent = new Intent(ma, LogIn.class);
             ma.startActivity(LogOutIntent);
         }
