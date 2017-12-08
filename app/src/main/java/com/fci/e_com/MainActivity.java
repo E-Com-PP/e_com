@@ -48,14 +48,14 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     WebView webViewer;
-    WebHandler handler = new WebHandler(this);
-    E_Mails allMails;
-    Top_50 top;
+    public WebHandler handler = new WebHandler(this);
+    public E_Mails allMails;
+    public Top_50 top;
     WebAppInterface webInterface;
     GWebAppInterface GInterface;
     Synchronizer Synchro = new Synchronizer(this, 500);
 
-    public DatabaseOperations ops = new DatabaseOperations(this, "ECOMT");
+    public DatabaseOperations ops = new DatabaseOperations(this, "ECOMT3");
     public UserSettings user;
     public List<NewsObj> News = new ArrayList<NewsObj>();
     public int loggedIn = 0;
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity
     String CurrentselectedYear2="";
     String CurrentSelectedType="";
     String UserPassword="";
-    String Name="";
+    public String Name="";
     int GraterThan2 =0;
     boolean EqualALl=true;
     public LogIn MyLogIn;
@@ -91,10 +91,8 @@ public class MainActivity extends AppCompatActivity
         allMails = new E_Mails(this);
         top = new Top_50(this);
         Bundle bundle = getIntent().getExtras();
-         Name = bundle.getString("NameStr");
+        Name = bundle.getString("NameStr");
         UserPassword = bundle.getString("PasswordStr");
-
-
     }
 
     @Override
@@ -102,8 +100,6 @@ public class MainActivity extends AppCompatActivity
     {
         super.onResume();
         handler.StartUp();
-
-
     }
 
     @Override
@@ -132,9 +128,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            ops.CreateTable("Test3", new String[] {"Username", "k", "bish"}, new String[] {"TEXT", "TEXT", "TEXT"});
-            ops.Insert("Test3", new String[] {"Username", "k", "bish"}, new String[] {"1", "lol", "yeah u heard me"});
-            Cursor cur = ops.Query("Test3", new String[] {"Username", "k", "bish"});
+            Cursor cur = ops.Query("Grade", ops.GradeColumnNames);
             cur.moveToFirst();
             do
             {
@@ -144,7 +138,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
             while (cur.moveToNext());
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -161,6 +154,9 @@ public class MainActivity extends AppCompatActivity
             trans.runOnCommit(new Runnable() {
                                   @Override
                                   public void run() {
+                                      if(ops.LoadExistingData(handler.MainActv, 1, 0))
+                                          fillFragment(News.size(),1);
+                                      else
                                       Synchro.AddTask(new NetTask(){
                                           @Override
                                           public void run()
@@ -188,12 +184,17 @@ public class MainActivity extends AppCompatActivity
                         spec.setContent(R.id.files);
                         spec.setIndicator("Received Files");
                         host.addTab(spec);
-
-                        Synchro.AddTask(new NetTask(){
-                            @Override
-                            public void run() {
-                                allMails.loadPage(1);
-                            }}, false);
+                        
+                        if(ops.LoadEmail(MainActivity.this, Name, 0)) {
+                            Toast.makeText(MainActivity.this, "Loaded Inbox from DB", Toast.LENGTH_SHORT).show();
+                            fillFragment(0, 4);
+                        }
+                        else
+                            Synchro.AddTask(new NetTask(){
+                                @Override
+                                public void run() {
+                                    allMails.loadPage(1);
+                                }}, false);
                     }
                 });
                 trans.replace(R.id.fragContainer, new inboxFragment()).commit();
@@ -221,14 +222,18 @@ public class MainActivity extends AppCompatActivity
 
 
                     final Spinner spin = initGradeSpinner(0);
-                    if(spin.getSelectedItem() != null)
-                        Synchro.AddTask(new NetTask(){
-                            @Override
-                            public void run() {
-                                handler.GetGrades(1, spin.getSelectedItem().toString());
-                            }}, false);
+                    if(spin.getSelectedItem() != null) {
+                        //if(ops.LoadExistingData(handler.MainActv, 0, spin.getSelectedItemPosition()))
+                        //    fillFragment(user.Grades.size(), 2);
+                        //else
+                        //    Synchro.AddTask(new NetTask() {
+                        //        @Override
+                        //        public void run() {
+                        //            handler.GetGrades(1, spin.getSelectedItem().toString());
+                        //        }
+                        //    }, false);
+                    }
                     else
-
                         Synchro.AddTask(new NetTask(){
                             @Override
                             public void run() {
@@ -243,12 +248,21 @@ public class MainActivity extends AppCompatActivity
                         public void onTabChanged(String s) {
                             if(s == "Top 50")
                             {
-                                //top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),GInterface);
-                                Synchro.AddTask(new NetTask(){
-                                    @Override
-                                    public void run() {
-                                        top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()), TypeSpinner.getSelectedItem().toString(), GInterface);
-                                    }}, false);
+                                if(ops.LoadTop50(handler.MainActv, YearsSpinner.getSelectedItem().toString(), TypeSpinner.getSelectedItem().toString())) 
+                                {
+                                    fillFragment(GraterThan2, 3);
+                                    Toast.makeText(MainActivity.this, "Loaded Top 50 from DB", Toast.LENGTH_SHORT).show();
+                                }
+                                else 
+                                {
+                                    //top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),GInterface);
+                                    Synchro.AddTask(new NetTask() {
+                                        @Override
+                                        public void run() {
+                                            top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()), TypeSpinner.getSelectedItem().toString(), GInterface);
+                                        }
+                                    }, false);
+                                }
                             }
                         }
                     });
@@ -260,11 +274,14 @@ public class MainActivity extends AppCompatActivity
             trans.runOnCommit(new Runnable() {
                 @Override
                 public void run() {
-                    Synchro.AddTask(new NetTask(){
-                        @Override
-                        public void run() {
-                            handler.GetNews();
-                        }}, false);
+                    if(ops.LoadExistingData(handler.MainActv, 1, 0))
+                        fillFragment(News.size(),0);
+                    else
+                        Synchro.AddTask(new NetTask(){
+                            @Override
+                            public void run() {
+                                handler.GetNews();
+                            }}, false);
                 }
             });
             trans.replace(R.id.fragContainer, new newsFragment()).commit();
@@ -296,12 +313,22 @@ public class MainActivity extends AppCompatActivity
             case 0:
                 adap = new ArrayAdapter<String>(handler.MainActv, R.layout.support_simple_spinner_dropdown_item, handler.YearOptions);
                 TempSpinner = ((Spinner) findViewById(R.id.YearSpin));
-
+                final Spinner toUse = TempSpinner;
                 TempSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                         currSelectedYear = parentView.getSelectedItem().toString();
                         ((TextView) findViewById(R.id.myGrades_year)).setText("Year " + Integer.toString(parentView.getCount() - position));
+
+                        if(ops.LoadExistingData(handler.MainActv, 0, toUse.getSelectedItemPosition()))
+                            fillFragment(user.Grades.size(), 2);
+                        else
+                            Synchro.AddTask(new NetTask() {
+                                @Override
+                                public void run() {
+                                    handler.GetGrades(1, toUse.getSelectedItem().toString());
+                                }
+                            }, false);
                     }
 
                     @Override
@@ -447,12 +474,10 @@ public class MainActivity extends AppCompatActivity
                     case 1: {
                         LinearLayout ll = (LinearLayout) findViewById(R.id.LLHome);
 
-                        ll.removeViewAt(6);
-                        ll.removeViewAt(6);
-
                         if(News.size() != 0)
-                            for(int i = 0; i < 2; i++)
+                            for(int i = 0; i < 3; i++)
                             {
+                                ll.removeViewAt(6);
                                 infl.inflate(R.layout.home_news, (ViewGroup) ll);
 
                                 TextView txtV = (TextView) (((ViewGroup) ll.getChildAt(6 + i)).getChildAt(1));
@@ -473,12 +498,14 @@ public class MainActivity extends AppCompatActivity
                     {
                         LinearLayout ll = (LinearLayout) findViewById(R.id.LLMyGrades);
 
-                        for(int i = 2; i < ll.getChildCount(); i++)
-                            ll.removeViewAt(i);
+                        int s = ll.getChildCount();
+                        for(int i = 2; i < s; i++)
+                            ll.removeViewAt(2);
 
                         if(num != 0)
                         {
-                            for(int i = 2; i < num + 2; i++)
+                            int toloop = num + 2;
+                            for(int i = 2; i < toloop; i++)
                             {
                                 infl.inflate(R.layout.grades_my_grades, (ViewGroup) ll);
 
@@ -492,7 +519,7 @@ public class MainActivity extends AppCompatActivity
                                 txtV.setText(Integer.toString(user.Grades.get(i-2).TotalAbs));
                             }
                         }
-
+                        //Toast.makeText(MainActivity.this, "", Toast.LENGTH_SHORT).show();
                         break;
                     }
                     //Top50 Fragment
@@ -528,6 +555,7 @@ public class MainActivity extends AppCompatActivity
                         }
                         break;
                     }
+                    //Inbox Fragment
                     case 4:
                     {
                         LinearLayout inboxLayout = (LinearLayout)((ViewGroup)findViewById(R.id.inbox)).getChildAt(0);
@@ -541,14 +569,20 @@ public class MainActivity extends AppCompatActivity
                             ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(2))).setText(allMails.e_mails.get(i).date);
                             ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(3))).setText(allMails.e_mails.get(i).msg);
                         }
-
-                        Synchro.AddTask(new NetTask(){
-                            @Override
-                            public void run() {
-                                allMails.sendFiles();
-                            }}, false);
+                        if(ops.LoadEmail(MainActivity.this, Name, 1))
+                        {
+                            Toast.makeText(MainActivity.this, "Loaded Files from DB", Toast.LENGTH_SHORT).show();
+                            fillFragment(0, 5);
+                        }
+                        else
+                            Synchro.AddTask(new NetTask(){
+                                @Override
+                                public void run() {
+                                    allMails.sendFiles();
+                                }}, false);
                         break;
                     }
+                    //Files Fragment
                     case 5:
                     {
                         LinearLayout filesLayout = (LinearLayout)((ViewGroup)findViewById(R.id.files)).getChildAt(0);
