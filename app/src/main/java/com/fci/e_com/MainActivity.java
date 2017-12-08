@@ -568,7 +568,7 @@ public class MainActivity extends AppCompatActivity
                         LinearLayout inboxLayout = (LinearLayout)((ViewGroup)findViewById(R.id.inbox)).getChildAt(0);
                         inboxLayout.removeAllViews();
 
-                        for(int i = 0; i < 7; i++) {
+                        for(int i = 0; i < allMails.e_mails.size(); i++) {
                             infl.inflate(R.layout.home_inbox, (ViewGroup) inboxLayout);
 
                             ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(0))).setText(allMails.e_mails.get(i).from);
@@ -595,7 +595,7 @@ public class MainActivity extends AppCompatActivity
                         LinearLayout filesLayout = (LinearLayout)((ViewGroup)findViewById(R.id.files)).getChildAt(0);
                         filesLayout.removeAllViews();
 
-                        for(int i = 0; i < 7; i++) {
+                        for(int i = 0; i < allMails.recievedFile.size(); i++) {
                             infl.inflate(R.layout.home_inbox, (ViewGroup) filesLayout);
 
                             ((TextView) (((ViewGroup) filesLayout.getChildAt(i)).getChildAt(0))).setText(allMails.recievedFile.get(i).from);
