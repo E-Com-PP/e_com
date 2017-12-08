@@ -12,42 +12,34 @@ import java.util.List;
  */
 
 public class UserSettings {
-        String Name = "";
-        int ID = 0;
-        float GPA = 0;
-        String Advisor = "";
-        String Visits = "";
-        int Year = 0;
-        String Status = "";
-        int Level = 0;
-        String MajorTrack = "";
-        String Minor = "";
-        List<Grade> Grades = new ArrayList<>();
+        public String Name = "";
+        public int ID = 0;
+        public float GPA = 0;
+        public String Advisor = "";
+        public String Visits = "";
+        public int Year = 0;
+        public String Status = "";
+        public int Level = 0;
+        public String MajorTrack = "";
+        public String Minor = "";
+        public List<Grade> Grades = new ArrayList<>();
 
         public UserSettings(String DataString)
         {
             if(DataString.contains("╖")) {
                 String[] DataA = DataString.split("╖");
                 Year = Integer.parseInt(DataA[0]);
-                Level = Integer.parseInt(DataA[2]);
                 Status = DataA[1];
-                MajorTrack = DataA[4];
+                Level = Integer.parseInt(DataA[2]);
                 Minor = DataA[3];
-                GPA = Float.parseFloat(DataA[7]);
-                ID = Integer.parseInt(DataA[6]);
+                MajorTrack = DataA[4];
                 Name = DataA[5];
+                ID = Integer.parseInt(DataA[6]);
+                GPA = Float.parseFloat(DataA[7]);
                 Advisor = DataA[8];
                 Visits = DataA[9];
             }
         }
+        public UserSettings() {};
     }
 
-class NewsObj{
-        String Data, Date;
-
-        public NewsObj(String data, String date)
-        {
-            Data = data;
-            Date = date;
-        }
-    }

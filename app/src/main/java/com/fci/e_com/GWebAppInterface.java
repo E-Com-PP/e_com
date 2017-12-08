@@ -51,6 +51,7 @@ public class GWebAppInterface
                                                      MainActv, varId));
             varId++;
         }
+        MainActv.ops.createInboxTable(MainActv.Name, MainActv.allMails.e_mails);
         MainActv.fillFragment(0, 4);
     }
 
@@ -61,7 +62,7 @@ public class GWebAppInterface
     }
 
     @JavascriptInterface
-    public void send(String s)
+    public void send(String s, String lev, String dep)
     {
         MainActv.Synchro.TaskDone();
         int counter = 0;
@@ -77,8 +78,8 @@ public class GWebAppInterface
                 counter++;
             }
         }
+        MainActv.ops.createTop50Table(dep, lev, MainActv.top.Top_50);
         MainActv.fillFragment(MainActv.GraterThan2,3);
-
     }
 
     @JavascriptInterface
@@ -101,9 +102,9 @@ public class GWebAppInterface
 
         for (int i = 0; i < inBetween.length; i += 5)
         {
-            MainActv.allMails.recievedFile.add(new recievedFile(MainActv, inBetween[i], inBetween[i + 1], inBetween[i + 2], inBetween[i + 3], inBetween[i + 4]));
+            MainActv.allMails.recievedFile.add(new receivedFile(MainActv, inBetween[i], inBetween[i + 1], inBetween[i + 2], inBetween[i + 3], inBetween[i + 4]));
         }
-
+        MainActv.ops.createFilesTable(MainActv.Name, MainActv.allMails.recievedFile);
         MainActv.fillFragment(0, 5);
     }
 }

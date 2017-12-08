@@ -10,7 +10,7 @@ import java.util.Map;
 public class Top_50
 {
     Map<String, String> deps = new HashMap<String, String>();
-    String[][] Top_50;
+    public String[][] Top_50;
     MainActivity MainActv;
 
     Top_50(MainActivity c)
@@ -51,7 +51,7 @@ public class Top_50
                                 "tbs += '|';" +
                                 "}" +
                                 "}" +
-                                "GInter.send(tbs);");
+                                "GInter.send(tbs, '" + year + "', '" + dep + "');");
                     }
                 });
             }
@@ -84,7 +84,7 @@ public class Top_50
                                 "tbs += '|';" +
                                 "}" +
                                 "}" +
-                                "GInter.send(tbs);");
+                                "GInter.send(tbs, '" + year + "', 'ALL');");
                     }
                 });
             }
