@@ -45,6 +45,8 @@ public class WebAppInterface {
 
         MainActv.News = result;
 
+        MainActv.ops.createNewsTable(result);
+
         if(MainActv.GetFragClass() == newsFragment.class)
             MainActv.fillFragment(result.size(), 0);
         else if(MainActv.GetFragClass() == homeFragment.class)
@@ -113,6 +115,7 @@ public class WebAppInterface {
     public void AddOptions(String option)
     {
         final MainActivity MainActv = (MainActivity)mContext;
+        MainActv.Synchro.TaskDone();
 
         String[] options = option.split("╖");
 

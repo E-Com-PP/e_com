@@ -157,6 +157,9 @@ public class MainActivity extends AppCompatActivity
             trans.runOnCommit(new Runnable() {
                                   @Override
                                   public void run() {
+                                      if(ops.LoadExistingData(handler.MainActv, 1, 0))
+                                          fillFragment(News.size(),1);
+                                      else
                                       Synchro.AddTask(new NetTask(){
                                           @Override
                                           public void run()
@@ -260,11 +263,14 @@ public class MainActivity extends AppCompatActivity
             trans.runOnCommit(new Runnable() {
                 @Override
                 public void run() {
-                    Synchro.AddTask(new NetTask(){
-                        @Override
-                        public void run() {
-                            handler.GetNews();
-                        }}, false);
+                    if(ops.LoadExistingData(handler.MainActv, 1, 0))
+                        fillFragment(News.size(),0);
+                    else
+                        Synchro.AddTask(new NetTask(){
+                            @Override
+                            public void run() {
+                                handler.GetNews();
+                            }}, false);
                 }
             });
             trans.replace(R.id.fragContainer, new newsFragment()).commit();
@@ -457,12 +463,10 @@ public class MainActivity extends AppCompatActivity
                     case 1: {
                         LinearLayout ll = (LinearLayout) findViewById(R.id.LLHome);
 
-                        ll.removeViewAt(6);
-                        ll.removeViewAt(6);
-
                         if(News.size() != 0)
-                            for(int i = 0; i < 2; i++)
+                            for(int i = 0; i < 3; i++)
                             {
+                                ll.removeViewAt(6);
                                 infl.inflate(R.layout.home_news, (ViewGroup) ll);
 
                                 TextView txtV = (TextView) (((ViewGroup) ll.getChildAt(6 + i)).getChildAt(1));

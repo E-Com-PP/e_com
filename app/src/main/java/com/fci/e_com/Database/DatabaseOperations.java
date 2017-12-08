@@ -1,6 +1,7 @@
 package com.fci.e_com.Database;
 
 import com.fci.e_com.Grade;
+import com.fci.e_com.NewsObj;
 import com.fci.e_com.MainActivity;
 
 import android.content.ContentValues;
@@ -19,6 +20,7 @@ import java.util.List;
 
 public class DatabaseOperations extends SQLiteOpenHelper {
     public static final String[] GradeColumnNames = new String[] {"Username", "Semester", "Level", "Code", "CName", "CGroup", "Grade", "YWork", "WExam", "TotalMarks", "LabAbs", "SectionAbs", "TotalAbs"};
+    public static final String[] NewsColumnNames = new String[] {"Body", "Date"};
 
     public DatabaseOperations(Context context, String DBName) {
         super(context, DBName, null, 1);
@@ -131,34 +133,66 @@ public class DatabaseOperations extends SQLiteOpenHelper {
             Update("Grade", new String[]{"Username", "Code"}, new String[]{Username, Vals[3]}, GradeColumnNames, Vals, true);
         }
     }
+    public void createNewsTable(List<NewsObj> news)
+    {
+        String[] Types = new String[] {"TEXT", "TEXT"};
+        CreateTable("News", NewsColumnNames, Types);
+
+        for(int i = 0; i < news.size(); i++)
+        {
+            String[] Vals = new String[]{news.get(i).Data, news.get(i).Date};
+
+            Update("News", new String[]{"Body"}, new String[]{Vals[0]}, NewsColumnNames, Vals, true);
+        }
+    }
 
     public boolean LoadExistingData(MainActivity ma, int caseType, int arg0)
     {
         String un = ma.Name;
 
-        switch(caseType)
-        {
-            case 0: {
-                Cursor cur = Select("Grade", GradeColumnNames, new String[]{"Username", "Semester", "Level"}, new String[]{un, "1", ma.handler.YearOptions.get(arg0)});
-                if(cur.getCount() == 0)
-                    return false;
+        try {
+            switch (caseType) {
+                //Grades
+                case 0: {
+                    Cursor cur = Select("Grade", GradeColumnNames, new String[]{"Username", "Semester", "Level"}, new String[]{un, "1", ma.handler.YearOptions.get(arg0)});
+                    if (cur.getCount() == 0)
+                        return false;
 
-                List<Grade> finalGrades = new ArrayList<>();
+                    List<Grade> finalGrades = new ArrayList<>();
 
-                cur.moveToFirst();
-                do {
-                    String res = "";
-                    for (int i = 3; i < cur.getColumnCount(); i++) {
-                        res += cur.getString(cur.getColumnIndex(Grade.inpOrder[i - 3])) + "╖";
+                    cur.moveToFirst();
+                    do {
+                        String res = "";
+                        for (int i = 3; i < cur.getColumnCount(); i++) {
+                            res += cur.getString(cur.getColumnIndex(Grade.inpOrder[i - 3])) + "╖";
+                        }
+                        finalGrades.add(new Grade(res));
                     }
-                    finalGrades.add(new Grade(res));
-                }
-                while (cur.moveToNext());
+                    while (cur.moveToNext());
 
-                ma.user.Grades = finalGrades;
-                return true;
+                    ma.user.Grades = finalGrades;
+                    return true;
+                }
+                //News
+                case 1: {
+                    Cursor cur = Query("News", NewsColumnNames);
+                    if (cur.getCount() == 0)
+                        return false;
+
+                    List<NewsObj> finalNews = new ArrayList<>();
+
+                    cur.moveToFirst();
+                    do {
+                        finalNews.add(new NewsObj(cur.getString(0), cur.getString(1)));
+                    }
+                    while (cur.moveToNext());
+
+                    ma.News = finalNews;
+                    return true;
+                }
             }
         }
+        catch(Exception ex) {}
 
         return false;
     }

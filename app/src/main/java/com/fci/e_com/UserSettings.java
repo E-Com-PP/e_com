@@ -42,12 +42,3 @@ public class UserSettings {
         }
     }
 
-class NewsObj{
-        String Data, Date;
-
-        public NewsObj(String data, String date)
-        {
-            Data = data;
-            Date = date;
-        }
-    }
