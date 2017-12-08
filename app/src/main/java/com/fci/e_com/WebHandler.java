@@ -130,9 +130,7 @@ public class WebHandler {
                                                 GetUserData();
                                             }
                                         }, false);
-                                        //MainActv.startActivity(new Intent(MainActv, ShowData.class));
                                     }});
-                                //GetUserData();
                             }
                         });
                     }
@@ -154,7 +152,6 @@ public class WebHandler {
                                                 GetUserData();
                                             }
                                         }, false);
-                                        //MainActv.startActivity(new Intent(MainActv, ShowData.class));
                                     }
                                 });
                             }});
@@ -177,53 +174,26 @@ public class WebHandler {
 
     public void GetUserData()
     {
-        //wb = (WebView)MainActivity.mainOB.findViewById(R.id.wv1);
-        //wb.loadUrl("javascript:document.getElementsByTagName('body')[0].innerHTML = ''");
-        //if(MainActv.loggedIn != 1) return;
-
-        MainActv.webViewer.loadUrl("javascript:(function() {try{var result = '';" +
-                "var tb = document.getElementsByClassName('tabledata')[0];" +
-                "for(var n = 0; n < 2; n++)" +
-                "{" +
-                "for(var i = 0; i < 5; i++)" +
-                "{" +
-                "result += (tb.children[0].children[n].children[i].innerText.includes(': ')) ? tb.children[0].children[n].children[i].innerText.split(': ')[1] : 'None';" +
-                "result += '╖';" +
-                "}" +
-                "}" +
-                "Android.sendData(result); Android.UserDataShow(); Android.isValidLogin('true');} catch(error) { Android.isValidLogin('false'); }})()");
+        if(MainActv.ops.LoadExistingData(MainActv, 2, 0)) {
+            MainActv.Synchro.TaskDone();
+            ((TextView) MainActv.findViewById(R.id.nameTxt)).setText(MainActv.user.Name);
+        }
+        else
+            MainActv.webViewer.loadUrl("javascript:(function() {try{var result = '';" +
+                    "var tb = document.getElementsByClassName('tabledata')[0];" +
+                    "for(var n = 0; n < 2; n++)" +
+                    "{" +
+                    "for(var i = 0; i < 5; i++)" +
+                    "{" +
+                    "result += (tb.children[0].children[n].children[i].innerText.includes(': ')) ? tb.children[0].children[n].children[i].innerText.split(': ')[1] : 'None';" +
+                    "result += '╖';" +
+                    "}" +
+                    "}" +
+                    "Android.sendData(result); Android.UserDataShow(); Android.isValidLogin('true');} catch(error) { Android.isValidLogin('false'); }})()");
     }
 
     public void GetNews()
     {
-        /*LoadJSOnPageFinish("https://my.fci-cu.edu.eg/", "javascript:var MainText = document.getElementsByClassName(\"items\")[0];" +
-                "var result = \"\";" +
-                "" +
-                "for(var i = 0; i < MainText.childElementCount; i++)" +
-                "{" +
-                "var Child = MainText.children[i];" +
-                "for(var n = 0; n < Child.childElementCount; n++)" +
-                "{" +
-                "var TextObj = Child.children[n].children[0].children[1].children[0];" +
-                "TextObj = TextObj.innerHTML;" +
-                "" +
-                "TextObj = TextObj.replace(/<br>/g, \"\").replace(/&nbsp;/g, '').split('</a>');" +
-                "for(var c = 0; c < TextObj.length; c++)" +
-                "{" +
-                "var includez = false;" +
-                "if(TextObj[c].includes(\"<a hre\"))" +
-                "{" +
-                "TextObj[c] = TextObj[c].split('<a href=');" +
-                "includez = true;" +
-                "}" +
-                "" +
-                "result += (includez) ? TextObj[c][0] : \"<a href=\" + TextObj[c];" +
-                "result += (includez) ? \"╖\" + TextObj[c][1] + \"╖\" : \"\";" +
-                "}" +
-                "result += \"±\";" +
-                "}" +
-                "}" +
-                "Android.sendNews(result);");*/
         LoadJSOnPageFinish("https://my.fci-cu.edu.eg/", "javascript:var MainText = document.getElementsByClassName(\"items\")[0];" +
                 "var result = \"\";" +
                 "" +
