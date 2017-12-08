@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -530,6 +531,7 @@ public class MainActivity extends AppCompatActivity
                     }
                     case 4:
                     {
+                        Toast.makeText(MainActivity.this, "bd2", Toast.LENGTH_SHORT).show();
                         LinearLayout inboxLayout = (LinearLayout)((ViewGroup)findViewById(R.id.inbox)).getChildAt(0);
                         inboxLayout.removeAllViews();
 
@@ -561,6 +563,18 @@ public class MainActivity extends AppCompatActivity
                             ((TextView) (((ViewGroup) filesLayout.getChildAt(i)).getChildAt(1))).setText(allMails.recievedFile.get(i).to);
                             ((TextView) (((ViewGroup) filesLayout.getChildAt(i)).getChildAt(2))).setText(allMails.recievedFile.get(i).date);
                             ((TextView) (((ViewGroup) filesLayout.getChildAt(i)).getChildAt(3))).setText(allMails.recievedFile.get(i).fileDescription);
+
+                            final int ind = i;
+                            ((ViewGroup) filesLayout.getChildAt(i)).setOnClickListener(new View.OnClickListener(){
+                                @Override
+                                public void onClick(View view) {
+                                    Synchro.AddTask(new NetTask(){
+                                        @Override
+                                        public void run() {
+                                            allMails.recievedFile.get(ind).download();
+                                        }}, false);
+                                }
+                            });
                         }
                         break;
                     }
