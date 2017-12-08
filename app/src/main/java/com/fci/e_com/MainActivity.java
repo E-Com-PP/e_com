@@ -3,6 +3,7 @@ package com.fci.e_com;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,13 +25,17 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fci.e_com.Database.DatabaseOperations;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 import layout.gradesFragment;
 import layout.gradesMyFragment;
@@ -48,7 +53,9 @@ public class MainActivity extends AppCompatActivity
     Top_50 top;
     WebAppInterface webInterface;
     GWebAppInterface GInterface;
+    Synchronizer Synchro = new Synchronizer(this, 500);
 
+    public DatabaseOperations ops = new DatabaseOperations(this, "ECOMT");
     public UserSettings user;
     public List<NewsObj> News = new ArrayList<NewsObj>();
     public int loggedIn = 0;
@@ -77,6 +84,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Timer t = new Timer();
+        t.schedule(Synchro, 0, Synchro.IntervalMS);
 
         allMails = new E_Mails(this);
         top = new Top_50(this);
@@ -122,18 +132,19 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            //initGradeSpinner(1);
-//            if(GetFragClass() == newsFragment.class)
-//                fillFragment(News.size(), 0);
-//            else if(GetFragClass() == homeFragment.class)
-//                fillFragment(0, 1);
-//            else if(GetFragClass() == gradesFragment.class) {
-//                //ArrayAdapter<String> adap = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, handler.YearOptions);
-//
-//                Spinner s = ((Spinner) findViewById(R.id.spinner3));
-//                handler.GetGrades(1, s.getSelectedItem().toString());
-//            }
-//            return true;
+            ops.CreateTable("Test3", new String[] {"Username", "k", "bish"}, new String[] {"TEXT", "TEXT", "TEXT"});
+            ops.Insert("Test3", new String[] {"Username", "k", "bish"}, new String[] {"1", "lol", "yeah u heard me"});
+            Cursor cur = ops.Query("Test3", new String[] {"Username", "k", "bish"});
+            cur.moveToFirst();
+            do
+            {
+                if(cur.getString(0).equals("1"))
+                {
+                    Toast.makeText(this, cur.getString(2), Toast.LENGTH_SHORT).show();
+                }
+            }
+            while (cur.moveToNext());
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -150,7 +161,12 @@ public class MainActivity extends AppCompatActivity
             trans.runOnCommit(new Runnable() {
                                   @Override
                                   public void run() {
-                                      handler.GetNews();
+                                      Synchro.AddTask(new NetTask(){
+                                          @Override
+                                          public void run()
+                                          {
+                                              handler.GetNews();
+                                          }}, false);
                                   }
                               });
             trans.replace(R.id.fragContainer, new homeFragment()).commit();
@@ -161,7 +177,7 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void run() {
 
-                        TabHost host = findViewById(R.id.inboxtabhost);
+                        TabHost host = (TabHost)findViewById(R.id.inboxtabhost);
                         host.setup();
 
                         TabHost.TabSpec spec = host.newTabSpec("Inbox");
@@ -173,7 +189,11 @@ public class MainActivity extends AppCompatActivity
                         spec.setIndicator("Received Files");
                         host.addTab(spec);
 
-                        allMails.loadPage();
+                        Synchro.AddTask(new NetTask(){
+                            @Override
+                            public void run() {
+                                allMails.loadPage(1);
+                            }}, false);
                     }
                 });
                 trans.replace(R.id.fragContainer, new inboxFragment()).commit();
@@ -187,7 +207,7 @@ public class MainActivity extends AppCompatActivity
             trans.runOnCommit(new Runnable() {
                 @Override
                 public void run() {
-                    TabHost host = findViewById(R.id.tabhost);
+                    TabHost host = (TabHost)findViewById(R.id.tabhost);
                     host.setup();
 
                     TabHost.TabSpec spec = host.newTabSpec("My Grades");
@@ -199,11 +219,22 @@ public class MainActivity extends AppCompatActivity
                     spec.setIndicator("Top 50");
                     host.addTab(spec);
 
-                    Spinner spin = initGradeSpinner(0);
+
+                    final Spinner spin = initGradeSpinner(0);
                     if(spin.getSelectedItem() != null)
-                        handler.GetGrades(1, spin.getSelectedItem().toString());
+                        Synchro.AddTask(new NetTask(){
+                            @Override
+                            public void run() {
+                                handler.GetGrades(1, spin.getSelectedItem().toString());
+                            }}, false);
                     else
-                        handler.GetGradeYears(1);
+
+                        Synchro.AddTask(new NetTask(){
+                            @Override
+                            public void run() {
+                                handler.GetGradeYears(1);
+                            }}, false);
+
                     final Spinner TypeSpinner = initGradeSpinner(1);
                     final Spinner YearsSpinner = initGradeSpinner(2);
 
@@ -213,8 +244,11 @@ public class MainActivity extends AppCompatActivity
                             if(s == "Top 50")
                             {
                                 //top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),GInterface);
-                                top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),TypeSpinner.getSelectedItem().toString(),GInterface);
-
+                                Synchro.AddTask(new NetTask(){
+                                    @Override
+                                    public void run() {
+                                        top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()), TypeSpinner.getSelectedItem().toString(), GInterface);
+                                    }}, false);
                             }
                         }
                     });
@@ -226,7 +260,11 @@ public class MainActivity extends AppCompatActivity
             trans.runOnCommit(new Runnable() {
                 @Override
                 public void run() {
-                    handler.GetNews();
+                    Synchro.AddTask(new NetTask(){
+                        @Override
+                        public void run() {
+                            handler.GetNews();
+                        }}, false);
                 }
             });
             trans.replace(R.id.fragContainer, new newsFragment()).commit();
@@ -492,20 +530,38 @@ public class MainActivity extends AppCompatActivity
                     }
                     case 4:
                     {
-                        LinearLayout inboxLayout = (LinearLayout)findViewById(R.id.inbox);
+                        LinearLayout inboxLayout = (LinearLayout)((ViewGroup)findViewById(R.id.inbox)).getChildAt(0);
                         inboxLayout.removeAllViews();
 
                         for(int i = 0; i < 7; i++) {
                             infl.inflate(R.layout.home_inbox, (ViewGroup) inboxLayout);
 
-                            Toast.makeText(MainActivity.this, allMails.e_mails.get(i).from, Toast.LENGTH_LONG).show();
-
                             ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(0))).setText(allMails.e_mails.get(i).from);
-                            ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(1))).setText(allMails.e_mails.get(i).to);                            ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(0))).setText(allMails.e_mails.get(i).from);
+                            ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(1))).setText(allMails.e_mails.get(i).to);
                             ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(2))).setText(allMails.e_mails.get(i).date);
                             ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(3))).setText(allMails.e_mails.get(i).msg);
                         }
-                        Toast.makeText(MainActivity.this, "FILL", Toast.LENGTH_SHORT).show();
+
+                        Synchro.AddTask(new NetTask(){
+                            @Override
+                            public void run() {
+                                allMails.sendFiles();
+                            }}, false);
+                        break;
+                    }
+                    case 5:
+                    {
+                        LinearLayout filesLayout = (LinearLayout)((ViewGroup)findViewById(R.id.files)).getChildAt(0);
+                        filesLayout.removeAllViews();
+
+                        for(int i = 0; i < 7; i++) {
+                            infl.inflate(R.layout.home_inbox, (ViewGroup) filesLayout);
+
+                            ((TextView) (((ViewGroup) filesLayout.getChildAt(i)).getChildAt(0))).setText(allMails.recievedFile.get(i).from);
+                            ((TextView) (((ViewGroup) filesLayout.getChildAt(i)).getChildAt(1))).setText(allMails.recievedFile.get(i).to);
+                            ((TextView) (((ViewGroup) filesLayout.getChildAt(i)).getChildAt(2))).setText(allMails.recievedFile.get(i).date);
+                            ((TextView) (((ViewGroup) filesLayout.getChildAt(i)).getChildAt(3))).setText(allMails.recievedFile.get(i).fileDescription);
+                        }
                         break;
                     }
                 }

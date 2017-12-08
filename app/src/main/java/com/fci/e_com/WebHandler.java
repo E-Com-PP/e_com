@@ -15,6 +15,7 @@ import java.util.List;
 
 public class WebHandler {
     public MainActivity MainActv;
+    Synchronizer synchro;
     public static List<String> YearOptions = new ArrayList<String>();
 
 
@@ -22,6 +23,7 @@ public class WebHandler {
 
     public void StartUp()
     {
+        synchro = MainActv.Synchro;
         MainActv.webViewer = MainActv.findViewById(R.id.wv1);
         MainActv.webInterface = new WebAppInterface(MainActv);
         MainActv.GInterface = new GWebAppInterface(MainActv);
@@ -119,7 +121,15 @@ public class WebHandler {
                                 MainActv.webViewer.setWebViewClient(new WebViewClient() {
                                     @Override
                                     public void onPageFinished(WebView web, String url) {
-                                        GetUserData();
+                                        synchro.TaskDone();
+
+                                        Toast.makeText(MainActv, "Logged in", Toast.LENGTH_LONG).show();
+                                        synchro.AddTask(new NetTask() {
+                                            @Override
+                                            public void run() {
+                                                GetUserData();
+                                            }
+                                        }, false);
                                         //MainActv.startActivity(new Intent(MainActv, ShowData.class));
                                     }});
                                 //GetUserData();
@@ -127,21 +137,41 @@ public class WebHandler {
                         });
                     }
                     else {
-                        ResetOnPageFinish();
-                        MainActv.webViewer.loadUrl(JS);
-                        MainActv.webViewer.setWebViewClient(new WebViewClient() {
+                        synchro.RunTask(new NetTask(){
                             @Override
-                            public void onPageFinished(WebView web, String url) {
-                                GetUserData();
-                                //MainActv.startActivity(new Intent(MainActv, ShowData.class));
+                            public void run() {
+                                ResetOnPageFinish();
+                                MainActv.webViewer.loadUrl(JS);
+                                MainActv.webViewer.setWebViewClient(new WebViewClient() {
+                                    @Override
+                                    public void onPageFinished(WebView web, String url) {
+                                        synchro.TaskDone();
+
+                                        Toast.makeText(MainActv, "Logged in", Toast.LENGTH_LONG).show();
+                                        synchro.AddTask(new NetTask() {
+                                            @Override
+                                            public void run() {
+                                                GetUserData();
+                                            }
+                                        }, false);
+                                        //MainActv.startActivity(new Intent(MainActv, ShowData.class));
+                                    }
+                                });
                             }});
                     }
                 }
             });
+
         }
         else if(MainActv.loggedIn == 1)
         {
-            LogOut(Username, Password);
+            synchro.AddTask(new NetTask(){
+                @Override
+                public void run()
+                {
+                    LogOut(Username, Password);
+                }
+            }, false);
         }
     }
 
@@ -300,11 +330,11 @@ public class WebHandler {
 
         LoadJSOnPageFinish(url, "javascript:var lst = document.getElementsByName(\"prev_years\")[0];\n" +
                 "var options = lst.options;\n" +
-                "\n" +
+                "\nvar res = '';" +
                 "for(var i = 0; i < options.length; i++)\n" +
                 "{\n" +
-                "\tAndroid.AddOption(options[i].value);\n" +
-                "}");
+                "\tres += options[i].value + '╖'\n" +
+                "}\nAndroid.AddOptions(res);");
     }
 
 

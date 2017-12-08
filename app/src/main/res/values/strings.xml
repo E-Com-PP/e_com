@@ -8,7 +8,7 @@
 
     <string name="prompt_email">ID</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in_short">LogIn</string>
+    <string name="action_sign_in_short">Login</string>
     <string name="hello_blank_fragment">idk test</string>
     <string name="link">&lt;a href="http://www.google.com">Google&lt;/a></string>
 </resources>

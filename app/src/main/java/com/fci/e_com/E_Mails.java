@@ -24,8 +24,8 @@ public class E_Mails
         MainActv = c;
     }
 
-    public void loadPage() {
-        e_mailsPageNumber++;
+    public void loadPage(int pageNumber) {
+        e_mailsPageNumber = pageNumber;
         MainActv.webViewer.loadUrl("https://my.fci-cu.edu.eg/content.php?pg=fromadmin.php&mt=" + Integer.toString(e_mailsPageNumber));
 
         MainActv.webViewer.setWebViewClient(new WebViewClient() {
@@ -38,7 +38,6 @@ public class E_Mails
                         "tbs += table[i].childNodes[1].textContent + '|' + table[i].childNodes[3].firstChild.textContent + '|' + table[i].childNodes[5].textContent + '|' + table[i].childNodes[7].textContent + '|'" +
                         "+ table[i].childNodes[3].firstChild.href + '|';" +
                         "GInter.sendE_mails(tbs);");
-                Toast.makeText(MainActv, "LOADPAGE", Toast.LENGTH_SHORT).show();
             }
         });
     }
