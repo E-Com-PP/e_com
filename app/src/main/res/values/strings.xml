@@ -6,9 +6,9 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="prompt_email">username</string>
-    <string name="prompt_password">password</string>
-    <string name="action_sign_in_short">idk test</string>
+    <string name="prompt_email">ID</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in_short">Login</string>
     <string name="hello_blank_fragment">idk test</string>
     <string name="link">&lt;a href="http://www.google.com">Google&lt;/a></string>
 </resources>

@@ -2,6 +2,7 @@ package com.fci.e_com;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.net.Uri;
@@ -84,6 +85,16 @@ public class WebHandler {
         }
     }
 
+    public void ValidInput()
+    {
+        MainActv.webViewer.post(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+    }
+
     public void Login(final String Username, final String Password)
     {
         if(MainActv.loggedIn == 0) {
@@ -110,7 +121,6 @@ public class WebHandler {
                                 MainActv.webViewer.setWebViewClient(new WebViewClient() {
                                     @Override
                                     public void onPageFinished(WebView web, String url) {
-                                        MainActv.loggedIn = 1;
                                         synchro.TaskDone();
 
                                         Toast.makeText(MainActv, "Logged in", Toast.LENGTH_LONG).show();
@@ -135,7 +145,6 @@ public class WebHandler {
                                 MainActv.webViewer.setWebViewClient(new WebViewClient() {
                                     @Override
                                     public void onPageFinished(WebView web, String url) {
-                                        MainActv.loggedIn = 1;
                                         synchro.TaskDone();
 
                                         Toast.makeText(MainActv, "Logged in", Toast.LENGTH_LONG).show();
@@ -170,9 +179,9 @@ public class WebHandler {
     {
         //wb = (WebView)MainActivity.mainOB.findViewById(R.id.wv1);
         //wb.loadUrl("javascript:document.getElementsByTagName('body')[0].innerHTML = ''");
-        if(MainActv.loggedIn != 1) return;
+        //if(MainActv.loggedIn != 1) return;
 
-        MainActv.webViewer.loadUrl("javascript:(function() {var result = '';" +
+        MainActv.webViewer.loadUrl("javascript:(function() {try{var result = '';" +
                 "var tb = document.getElementsByClassName('tabledata')[0];" +
                 "for(var n = 0; n < 2; n++)" +
                 "{" +
@@ -182,7 +191,7 @@ public class WebHandler {
                 "result += '╖';" +
                 "}" +
                 "}" +
-                "Android.sendData(result); Android.UserDataShow()})()");
+                "Android.sendData(result); Android.UserDataShow(); Android.isValidLogin('true');} catch(error) { Android.isValidLogin('false'); }})()");
     }
 
     public void GetNews()
