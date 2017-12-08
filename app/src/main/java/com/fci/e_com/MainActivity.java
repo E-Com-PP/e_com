@@ -2,6 +2,7 @@ package com.fci.e_com;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -29,6 +30,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fci.e_com.Database.DatabaseOperations;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     GWebAppInterface GInterface;
     Synchronizer Synchro = new Synchronizer(this, 500);
 
+    public DatabaseOperations ops = new DatabaseOperations(this, "ECOMT");
     public UserSettings user;
     public List<NewsObj> News = new ArrayList<NewsObj>();
     public int loggedIn = 0;
@@ -121,38 +125,19 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Synchro.AddTask(new NetTask(){
-                @Override
-                public void run() {
-                    handler.GetGrades(1, "17");
-                }}, false);
-            Synchro.AddTask(new NetTask(){
-                @Override
-                public void run() {
-                    handler.GetGrades(1, "17");
-                }}, false);
-            Synchro.AddTask(new NetTask(){
-                @Override
-                public void run() {
-                    handler.GetGrades(1, "17");
-                }}, false);
-            Synchro.AddTask(new NetTask(){
-                @Override
-                public void run() {
-                    handler.GetGrades(1, "17");
-                }}, false);
+            ops.CreateTable("Test3", new String[] {"Username", "k", "bish"}, new String[] {"TEXT", "TEXT", "TEXT"});
+            ops.Insert("Test3", new String[] {"Username", "k", "bish"}, new String[] {"1", "lol", "yeah u heard me"});
+            Cursor cur = ops.Query("Test3", new String[] {"Username", "k", "bish"});
+            cur.moveToFirst();
+            do
+            {
+                if(cur.getString(0).equals("1"))
+                {
+                    Toast.makeText(this, cur.getString(2), Toast.LENGTH_SHORT).show();
+                }
+            }
+            while (cur.moveToNext());
 
-//            if(GetFragClass() == newsFragment.class)
-//                fillFragment(News.size(), 0);
-//            else if(GetFragClass() == homeFragment.class)
-//                fillFragment(0, 1);
-//            else if(GetFragClass() == gradesFragment.class) {
-//                //ArrayAdapter<String> adap = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, handler.YearOptions);
-//
-//                Spinner s = ((Spinner) findViewById(R.id.spinner3));
-//                handler.GetGrades(1, s.getSelectedItem().toString());
-//            }
-//            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -253,11 +238,9 @@ public class MainActivity extends AppCompatActivity
                             {
                                 //top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),GInterface);
                                 top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),TypeSpinner.getSelectedItem().toString(),GInterface);
-
                             }
                         }
                     });
-
                 }
             });
             trans.replace(R.id.fragContainer, new gradesFragment()).commit();
