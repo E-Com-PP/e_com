@@ -2,6 +2,7 @@ package com.fci.e_com;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.view.menu.ShowableListMenu;
 import android.webkit.JavascriptInterface;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
@@ -45,6 +46,8 @@ public class WebAppInterface {
 
         MainActv.News = result;
 
+        MainActv.ops.createNewsTable(result);
+
         if(MainActv.GetFragClass() == newsFragment.class)
             MainActv.fillFragment(result.size(), 0);
         else if(MainActv.GetFragClass() == homeFragment.class)
@@ -58,18 +61,20 @@ public class WebAppInterface {
         if(valid.equals("true"))
         {
             ma.loggedIn = 1;
+            ma.ShowDialogProgress(false);
 
             Toast.makeText(ma, "Logged in", Toast.LENGTH_LONG).show();
         }
         else
         {
+            //ma.ShowDialogProgress(false);
             Intent LogOutIntent = new Intent(ma, LogIn.class);
             ma.startActivity(LogOutIntent);
         }
     }
 
     @JavascriptInterface
-    public void sendGrades(String dataz)
+    public void sendGrades(String dataz, String sem, String level)
     {
         MainActivity ma = ((MainActivity)mContext);
         ma.Synchro.TaskDone();
@@ -82,7 +87,7 @@ public class WebAppInterface {
             Grades.add(new Grade(courses[i]));
         }
 
-        //ma.ops.createGradesTable(ma.Grades);
+        ma.ops.createGradesTable(ma.Name, sem, level, Grades);
 
         ma.user.Grades = Grades;
         ma.fillFragment(Grades.size(), 2);
@@ -94,6 +99,8 @@ public class WebAppInterface {
         MainActivity MA = ((MainActivity)mContext);
         MA.loggedIn = (logged.equals("true")) ? 1 : 0;
         MA.handler.Login(MA.Name, MA.UserPassword);
+        MA.Name="";
+        MA.UserPassword="";
     }
 
     @JavascriptInterface
@@ -104,6 +111,8 @@ public class WebAppInterface {
         MainActivity MainActv = ((MainActivity)mContext);
         MainActv.user = new UserSettings(MainActv.webInterface.data);
 
+        MainActv.ops.createUserTable(MainActv.Name, MainActv.user);
+
         ((TextView)MainActv.findViewById(R.id.nameTxt)).setText(MainActv.user.Name);
         //Toast.makeText(MainActv, MainActv.user.Name, Toast.LENGTH_SHORT).show();
         //((TextView)ShowData.showData.findViewById(R.id.lblName)).setText(MainActv.user.Name);
@@ -112,13 +121,20 @@ public class WebAppInterface {
     @JavascriptInterface
     public void AddOptions(String option)
     {
-        MainActivity MainActv = (MainActivity)mContext;
-
+        final MainActivity MainActv = (MainActivity)mContext;
         MainActv.Synchro.TaskDone();
+
         String[] options = option.split("╖");
 
         for(int i = 0; i < options.length; i++) {
             MainActv.handler.YearOptions.add(options[i]);
         }
+
+        MainActv.findViewById(R.id.YearSpin).post(new Runnable() {
+            @Override
+            public void run() {
+                MainActv.initGradeSpinner(0);
+            }
+        });
     }
 }
