@@ -2,7 +2,6 @@ package com.fci.e_com;
 
 import android.webkit.WebViewClient;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,9 +10,9 @@ import java.util.Map;
 
 public class E_Mails
 {
-    List<recievedFile> recievedFile = new ArrayList<recievedFile>();
+    public List<receivedFile> recievedFile = new ArrayList<receivedFile>();
     Map<String, String> options = new HashMap<String, String>();
-    List<E_mail> e_mails = new ArrayList<E_mail>();
+    public List<E_mail> e_mails = new ArrayList<E_mail>();
 
     public int e_mailsPageNumber = 0;
     public int filesPageNumber = 0;
@@ -92,79 +91,3 @@ public class E_Mails
     }
 }
 
-class E_mail
-{
-    String date, msg, from, to, openURL, deleteURL, replyURL, message;
-    int id;
-    MainActivity MainActv;
-
-    E_mail(String date, String msg, String from, String to, String openURL, MainActivity c, int id)
-    {
-        this.date = date;
-        this.msg = msg;
-        this.from = from;
-        this.to = to;
-        this.openURL = openURL;
-        MainActv = c;
-        this.id = id;
-    }
-
-    public void openE_mail()
-    {
-        MainActv.webViewer.loadUrl(openURL);
-        MainActv.webViewer.setWebViewClient(new WebViewClient()
-        {
-            @Override
-            public void onPageFinished(WebView web, String url)
-            {
-                web.loadUrl("javascript: GInter.sendAdditionalInfo(" +
-                        "document.getElementsByTagName('tbody')[4].childNodes[4].childNodes[1].childNodes[1].href," +
-                        "document.getElementsByTagName('tbody')[4].childNodes[4].childNodes[3].firstChild.href," +
-                        "document.getElementsByTagName('tbody')[4].childNodes[2].childNodes[3].textContent," +
-                        "'" + Integer.toString(id) + "');");
-            }
-        });
-    }
-
-    public void deleteMsg(WebView w)
-    {
-        w.loadUrl(deleteURL);
-    }
-
-    public void reply(final String userReply)
-    {
-        MainActv.webViewer.loadUrl(replyURL);
-        MainActv.webViewer.setWebViewClient(new WebViewClient()
-        {
-            @Override
-            public void onPageFinished(WebView web, String url)
-            {
-                web.loadUrl("javascript: document.getElementsByTagName('tbody')[4].childNodes[4].childNodes[1].firstChild.value='" +
-                        userReply + "';" +
-                        "var x = document.getElementsByTagName('tbody')[4].childNodes[6].childNodes[1].childNodes[3];" +
-                        "$(x).trigger('click');");
-            }
-        });
-    }
-}
-
-class recievedFile
-{
-    String date, from, fileDescription, to, downloadLink;
-    MainActivity MainActv;
-
-    recievedFile(MainActivity MainActv, String date, String from, String fileDescription, String to, String downloadLink)
-    {
-        this.date = date;
-        this.from = from;
-        this.fileDescription = fileDescription;
-        this.to = to;
-        this.downloadLink = downloadLink;
-        this.MainActv = MainActv;
-    }
-
-    public void download()
-    {
-        MainActv.webViewer.loadUrl(downloadLink);
-    }
-}

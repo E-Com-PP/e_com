@@ -3,6 +3,7 @@ package com.fci.e_com;
 public class Grade{
     public String Code, CName, Group, Grade;
     public int YWork, WExam, TotalMarks, LabAbs, SectionAbs, TotalAbs;
+    public static final String[] inpOrder = new String[] {"Code", "CName", "CGroup", "YWork", "WExam", "TotalMarks", "Grade", "LabAbs", "SectionAbs", "TotalAbs"};
 
     public Grade(String Data)
     {
