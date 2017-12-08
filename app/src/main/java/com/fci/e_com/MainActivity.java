@@ -48,6 +48,8 @@ import layout.newsFragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static boolean OfflineMode = false;
+
     WebView webViewer;
     public WebHandler handler = new WebHandler(this);
     public E_Mails allMails;
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity
     GWebAppInterface GInterface;
     Synchronizer Synchro = new Synchronizer(this, 500);
 
-    public DatabaseOperations ops = new DatabaseOperations(this, "ECOMT3");
+    public DatabaseOperations ops = new DatabaseOperations(this, "ECOMA0.1");
     public UserSettings user;
     public List<NewsObj> News = new ArrayList<NewsObj>();
     public int loggedIn = 0;
@@ -615,8 +617,8 @@ public class MainActivity extends AppCompatActivity
         }
         else {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Loging in");
-            progressDialog.setMessage("Loging in please wait....");
+            progressDialog.setTitle("Logging in");
+            progressDialog.setMessage("Authenticating! Hold on for a moment...");
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
