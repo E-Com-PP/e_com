@@ -582,8 +582,8 @@ public class MainActivity extends AppCompatActivity
         }
         else {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Loging in");
-            progressDialog.setMessage("Loging in please wait....");
+            progressDialog.setTitle("Logging in");
+            progressDialog.setMessage("Logging in please wait....");
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
