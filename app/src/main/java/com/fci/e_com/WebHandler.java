@@ -114,7 +114,6 @@ public class WebHandler {
                         MainActv.webViewer.setWebViewClient(new WebViewClient() {
                             @Override
                             public void onPageFinished(WebView web, String url) {
-                                // TODO Auto-generated method stub
                                 ResetOnPageFinish();
                                 MainActv.webViewer.loadUrl(JS);
 

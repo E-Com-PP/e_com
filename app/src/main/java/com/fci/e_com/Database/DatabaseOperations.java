@@ -23,6 +23,7 @@ public class DatabaseOperations extends SQLiteOpenHelper {
     public static final String[] GradeColumnNames = new String[] {"Username", "Semester", "Level", "Code", "CName", "CGroup", "Grade", "YWork", "WExam", "TotalMarks", "LabAbs", "SectionAbs", "TotalAbs"};
     public static final String[] NewsColumnNames = new String[] {"Body", "Date"};
     public static final String[] UserColumnNames = new String[] {"Username", "Year", "Status", "Level", "Minor", "MajorTrack", "Name", "ID", "GPA", "Advisor", "Visits"};
+    public static final String[] Top50ColumnNames = new String[] {"Level", "Department", "Rank", "ID", "Name", "GPA", "Total"};
 
     public DatabaseOperations(Context context, String DBName) {
         super(context, DBName, null, 1);
@@ -157,7 +158,45 @@ public class DatabaseOperations extends SQLiteOpenHelper {
 
         Update("User", new String[]{"Username"}, new String[]{Vals[0]}, UserColumnNames, Vals, true);
     }
+    public void createTop50Table(String Department, String Level, String[][] Top50)
+    {
+        String[] Types = new String[] {"TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT"};
+        CreateTable("Top50", Top50ColumnNames, Types);
 
+        for(int i = 0; i < Top50.length; i++)
+        {
+            String[] Vals = new String[]{Level, Department, Top50[i][0], Top50[i][1], Top50[i][2], Top50[i][3], Top50[i][4]};
+
+            Update("Top50", new String[]{"Level", "Department", "Rank"}, new String[]{Level, Department, Vals[2]}, Top50ColumnNames, Vals, true);
+        }
+    }
+    public boolean LoadTop50(MainActivity ma, String dep, String lev)
+    {
+        try {
+            Cursor cur = Select("Top50", Top50ColumnNames, new String[]{"Level", "Department"}, new String[]{dep, lev,});
+            if (cur.getCount() == 0)
+                return false;
+
+            String[][] finalTop50 = new String[cur.getCount()][5];
+
+            cur.moveToFirst();
+            for (int i = 0; i < cur.getCount(); i++) {
+                finalTop50[i][0] = cur.getString(2);
+                finalTop50[i][1] = cur.getString(3);
+                finalTop50[i][2] = cur.getString(4);
+                finalTop50[i][3] = cur.getString(5);
+                finalTop50[i][4] = cur.getString(6);
+
+                cur.moveToNext();
+            }
+
+            ma.top.Top_50 = finalTop50;
+            return true;
+        }
+        catch (Exception ex) {}
+
+        return false;
+    }
     public boolean LoadExistingData(MainActivity ma, int caseType, int arg0)
     {
         String un = ma.Name;

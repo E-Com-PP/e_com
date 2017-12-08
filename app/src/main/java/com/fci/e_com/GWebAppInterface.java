@@ -61,7 +61,7 @@ public class GWebAppInterface
     }
 
     @JavascriptInterface
-    public void send(String s)
+    public void send(String s, String lev, String dep)
     {
         MainActv.Synchro.TaskDone();
         int counter = 0;
@@ -77,8 +77,8 @@ public class GWebAppInterface
                 counter++;
             }
         }
+        MainActv.ops.createTop50Table(dep, lev, MainActv.top.Top_50);
         MainActv.fillFragment(MainActv.GraterThan2,3);
-
     }
 
     @JavascriptInterface

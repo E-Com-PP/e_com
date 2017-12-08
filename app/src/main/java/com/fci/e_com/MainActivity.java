@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity
     WebView webViewer;
     public WebHandler handler = new WebHandler(this);
     E_Mails allMails;
-    Top_50 top;
+    public Top_50 top;
     WebAppInterface webInterface;
     GWebAppInterface GInterface;
     Synchronizer Synchro = new Synchronizer(this, 500);
@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
             while (cur.moveToNext());
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -244,12 +243,21 @@ public class MainActivity extends AppCompatActivity
                         public void onTabChanged(String s) {
                             if(s == "Top 50")
                             {
-                                //top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),GInterface);
-                                Synchro.AddTask(new NetTask(){
-                                    @Override
-                                    public void run() {
-                                        top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()), TypeSpinner.getSelectedItem().toString(), GInterface);
-                                    }}, false);
+                                if(ops.LoadTop50(handler.MainActv, YearsSpinner.getSelectedItem().toString(), TypeSpinner.getSelectedItem().toString())) 
+                                {
+                                    fillFragment(GraterThan2, 3);
+                                    Toast.makeText(MainActivity.this, "Loaded Top 50 from DB", Toast.LENGTH_SHORT).show();
+                                }
+                                else 
+                                {
+                                    //top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),GInterface);
+                                    Synchro.AddTask(new NetTask() {
+                                        @Override
+                                        public void run() {
+                                            top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()), TypeSpinner.getSelectedItem().toString(), GInterface);
+                                        }
+                                    }, false);
+                                }
                             }
                         }
                     });
