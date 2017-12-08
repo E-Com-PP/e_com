@@ -1,6 +1,8 @@
 package com.fci.e_com;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -26,7 +28,6 @@ public class LogIn extends AppCompatActivity {
             public void onClick(View view) {
                 NameStr = Name.getText().toString();
                 PasswordStr = Password.getText().toString();
-
                 SwitchActivity();
             }
 
@@ -39,6 +40,9 @@ public class LogIn extends AppCompatActivity {
         intent.putExtra("NameStr", NameStr);
         intent.putExtra("PasswordStr",PasswordStr);
         startActivity(intent);
+
+
+
     }
     public String getEmail(){return NameStr;}
     public String getPassword(){return PasswordStr;}

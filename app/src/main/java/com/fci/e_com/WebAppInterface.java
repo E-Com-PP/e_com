@@ -2,6 +2,7 @@ package com.fci.e_com;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.view.menu.ShowableListMenu;
 import android.webkit.JavascriptInterface;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
@@ -60,11 +61,13 @@ public class WebAppInterface {
         if(valid.equals("true"))
         {
             ma.loggedIn = 1;
+            ma.ShowDialogProgress(false);
 
             Toast.makeText(ma, "Logged in", Toast.LENGTH_LONG).show();
         }
         else
         {
+            //ma.ShowDialogProgress(false);
             Intent LogOutIntent = new Intent(ma, LogIn.class);
             ma.startActivity(LogOutIntent);
         }
@@ -96,6 +99,8 @@ public class WebAppInterface {
         MainActivity MA = ((MainActivity)mContext);
         MA.loggedIn = (logged.equals("true")) ? 1 : 0;
         MA.handler.Login(MA.Name, MA.UserPassword);
+        MA.Name="";
+        MA.UserPassword="";
     }
 
     @JavascriptInterface

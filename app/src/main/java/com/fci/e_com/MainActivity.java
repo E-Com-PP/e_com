@@ -2,6 +2,7 @@ package com.fci.e_com;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -68,11 +69,13 @@ public class MainActivity extends AppCompatActivity
     int GraterThan2 =0;
     boolean EqualALl=true;
     public LogIn MyLogIn;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ShowDialogProgress(true);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -602,6 +605,21 @@ public class MainActivity extends AppCompatActivity
             }
         }
         findViewById(R.id.drawer_layout).post(new FillFragmentsRunnable(num,type));
+
+    }
+    void ShowDialogProgress(boolean Show)
+    {
+        if(!Show&&progressDialog!=null)
+        {
+            progressDialog.dismiss();
+        }
+        else {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Loging in");
+            progressDialog.setMessage("Loging in please wait....");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
 
     }
 }
