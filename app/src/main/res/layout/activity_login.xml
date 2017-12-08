@@ -8,10 +8,20 @@
     tools:context="com.fci.e_com.MainActivity"
     android:weightSum="1"
     android:gravity="center"
-    android:background="#BEC2C8"
+    android:background="@color/colorBackground"
     android:id="@+id/login_form">
 
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_marginTop="-100dp"
+        android:layout_marginBottom="0dp"
+        android:adjustViewBounds="false"
+        app:srcCompat="@mipmap/ic_launcher_foreground" />
+
     <!-- Login progress -->
+
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
@@ -25,7 +35,8 @@
         android:layout_width="fill_parent"
         android:layout_height="300dp"
         android:background="@drawable/roundcorner"
-        android:padding="12dp">
+        android:padding="12dp"
+        android:layout_marginTop="0dp">
 
 
         <android.support.design.widget.TextInputLayout
@@ -61,6 +72,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignTop="@+id/email"
             android:layout_toLeftOf="@+id/email"
+            android:adjustViewBounds="false"
             app:srcCompat="@drawable/ic_account_circle_black_24dp" />
 
         <Button
@@ -71,7 +83,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="28dp"
-            android:background="#47525E"
+            android:background="@color/colorPrimary"
 
             android:gravity="center"
             android:text="LOG IN"
@@ -85,7 +97,7 @@
             android:layout_above="@+id/password"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="24dp"
             android:hint="@string/prompt_email"
             android:inputType="textEmailAddress"
             android:maxLines="1"
@@ -105,8 +117,6 @@
             android:inputType="textPassword"
             android:maxLines="1"
             android:singleLine="true" />
-
-
     </RelativeLayout>
 
 
