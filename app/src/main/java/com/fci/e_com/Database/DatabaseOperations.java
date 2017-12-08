@@ -1,12 +1,16 @@
 package com.fci.e_com.Database;
 
 import com.fci.e_com.Grade;
+import com.fci.e_com.MainActivity;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Switch;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,6 +18,8 @@ import java.util.List;
  */
 
 public class DatabaseOperations extends SQLiteOpenHelper {
+    public static final String[] GradeColumnNames = new String[] {"Username", "Semester", "Level", "Code", "CName", "CGroup", "Grade", "YWork", "WExam", "TotalMarks", "LabAbs", "SectionAbs", "TotalAbs"};
+
     public DatabaseOperations(Context context, String DBName) {
         super(context, DBName, null, 1);
     }
@@ -31,11 +37,11 @@ public class DatabaseOperations extends SQLiteOpenHelper {
 
         try {
             SQLiteDatabase sdb = getWritableDatabase();
-            String CREATE_QUERY = "CREATE TABLE " + TName + " (";
+            String CREATE_QUERY = "CREATE TABLE " + TName + "( ";
             for (int i = 0; i < ColumnNames.length; i++) {
-                CREATE_QUERY += ColumnNames[i] + " " + ColumnTypes[i] + ((i == ColumnNames.length - 1) ? "" : ",");
+                CREATE_QUERY += ColumnNames[i] + " " + ColumnTypes[i] + ((i == ColumnNames.length - 1) ? "" : ", ");
             }
-            CREATE_QUERY += ");";
+            CREATE_QUERY += " );";
 
             sdb.execSQL(CREATE_QUERY);
             return true;
@@ -65,33 +71,44 @@ public class DatabaseOperations extends SQLiteOpenHelper {
         Cursor cur = sdb.query(TName, ColumnNames, null, null, null, null, null);
         return cur;
     }
-    public Cursor Select(String TName, String[] ColumnNames, String colSelect, String valToSelect)
+    public Cursor Select(String TName, String[] ColumnNames, String[] colSelect, String[] valToSelect)
     {
         SQLiteDatabase sdb = getReadableDatabase();
-        Cursor cur = sdb.query(TName, ColumnNames, colSelect + " LIKE ?", new String[] {valToSelect}, null, null, null);
+        String selectQuery = "";
+        for(int i = 0; i < valToSelect.length; i++)
+        {
+            selectQuery += colSelect[i] + " = ?" + ((i == valToSelect.length - 1) ? "" : " AND ");
+        }
+        Cursor cur = sdb.query(TName, ColumnNames, selectQuery, valToSelect, null, null, null);
         return cur;
     }
 
-    public void Update(String TName, String colSelect, String valToSelect, String[] ColumnNames, String[] Vals, boolean insertOnFail)
+    public void Update(String TName, String[] colSelect, String[] valToSelect, String[] ColumnNames, String[] Vals, boolean insertOnFail)
     {
         SQLiteDatabase sdb = getWritableDatabase();
 
         try {
-            String selection = colSelect + " LIKE ?";
+            String selectQuery = "";
+            for(int i = 0; i < valToSelect.length; i++)
+            {
+                selectQuery += colSelect[i] + " LIKE ?" + ((i == valToSelect.length - 1) ? "" : " AND ");
+            }
 
             ContentValues cont = new ContentValues();
             for (int i = 0; i < Vals.length; i++) {
                 cont.put(ColumnNames[i], Vals[i]);
             }
 
-            sdb.update(TName, cont, selection, new String[]{valToSelect});
-        }
-        catch (Exception ex)
-        {
-            if(insertOnFail)
+            int rowsaffected = sdb.update(TName, cont, selectQuery, valToSelect);
+
+            if(insertOnFail && rowsaffected == 0)
             {
                 Insert(TName, ColumnNames, Vals);
             }
+        }
+        catch (Exception ex)
+        {
+
         }
     }
     @Override
@@ -100,19 +117,49 @@ public class DatabaseOperations extends SQLiteOpenHelper {
 
     }
 
-    public void createGradesTable(String Username, String Level, List<Grade> grades)
+    public void createGradesTable(String Username, String Semester, String Level, List<Grade> grades)
     {
-        String[] ColumnNames = new String[] {"Username", "Level", "Code", "CName", "Group", "Grade", "YWork", "WExam", "TotalMarks", "LabAbs", "SectionAbs", "TotalAbs"};
-        String[] Types = new String[] {"TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT"};
-        CreateTable("Grade", ColumnNames, Types);
+        String[] Types = new String[] {"TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT"};
+        CreateTable("Grade", GradeColumnNames, Types);
 
         for(int i = 0; i < grades.size(); i++)
         {
             Grade g = grades.get(i);
-            String[] Vals = new String[]{Username, Level, g.Code, g.CName, g.Group, g.Grade, Integer.toString(g.YWork), Integer.toString(g.WExam)
+            String[] Vals = new String[]{Username, Semester, Level, g.Code, g.CName, g.Group, g.Grade, Integer.toString(g.YWork), Integer.toString(g.WExam)
                     , Integer.toString(g.TotalMarks), Integer.toString(g.LabAbs), Integer.toString(g.SectionAbs), Integer.toString(g.TotalAbs)};
 
-            Update("Grade", "Username", Username, ColumnNames, Vals, true);
+            Update("Grade", new String[]{"Username", "Code"}, new String[]{Username, Vals[3]}, GradeColumnNames, Vals, true);
         }
+    }
+
+    public boolean LoadExistingData(MainActivity ma, int caseType, int arg0)
+    {
+        String un = ma.Name;
+
+        switch(caseType)
+        {
+            case 0: {
+                Cursor cur = Select("Grade", GradeColumnNames, new String[]{"Username", "Semester", "Level"}, new String[]{un, "1", ma.handler.YearOptions.get(arg0)});
+                if(cur.getCount() == 0)
+                    return false;
+
+                List<Grade> finalGrades = new ArrayList<>();
+
+                cur.moveToFirst();
+                do {
+                    String res = "";
+                    for (int i = 3; i < cur.getColumnCount(); i++) {
+                        res += cur.getString(cur.getColumnIndex(Grade.inpOrder[i - 3])) + "╖";
+                    }
+                    finalGrades.add(new Grade(res));
+                }
+                while (cur.moveToNext());
+
+                ma.user.Grades = finalGrades;
+                return true;
+            }
+        }
+
+        return false;
     }
 }

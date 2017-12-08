@@ -257,7 +257,7 @@ public class WebHandler {
                 "}" +
                 "Android.sendGrades(result);");
     }
-    public void GetGrades(int semester, final String option)
+    public void GetGrades(final int semester, final String option)
     {
         if(YearOptions.size() != 0) {
             String url = "https://my.fci-cu.edu.eg/content.php?pg=studgroup_term" + semester + ".php";
@@ -285,7 +285,7 @@ public class WebHandler {
                                         "}" +
                                         "result += \"±\";" +
                                         "}" +
-                                        "Android.sendGrades(result);");
+                                        "Android.sendGrades(result, '" + semester + "', '" + option + "');");
                             }
                         });
                     }
@@ -312,7 +312,7 @@ public class WebHandler {
                                 "}" +
                                 "result += \"±\";" +
                                 "}" +
-                                "Android.sendGrades(result);");
+                                "Android.sendGrades(result, '" + semester + "', '" + option + "');");
                     }
                 });
             }

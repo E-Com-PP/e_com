@@ -22,7 +22,7 @@ public class UserSettings {
         int Level = 0;
         String MajorTrack = "";
         String Minor = "";
-        List<Grade> Grades = new ArrayList<>();
+        public List<Grade> Grades = new ArrayList<>();
 
         public UserSettings(String DataString)
         {

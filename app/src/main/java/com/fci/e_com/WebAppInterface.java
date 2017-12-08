@@ -69,7 +69,7 @@ public class WebAppInterface {
     }
 
     @JavascriptInterface
-    public void sendGrades(String dataz)
+    public void sendGrades(String dataz, String sem, String level)
     {
         MainActivity ma = ((MainActivity)mContext);
         ma.Synchro.TaskDone();
@@ -82,7 +82,7 @@ public class WebAppInterface {
             Grades.add(new Grade(courses[i]));
         }
 
-        //ma.ops.createGradesTable(ma.Grades);
+        ma.ops.createGradesTable(ma.Name, sem, level, Grades);
 
         ma.user.Grades = Grades;
         ma.fillFragment(Grades.size(), 2);
@@ -112,13 +112,19 @@ public class WebAppInterface {
     @JavascriptInterface
     public void AddOptions(String option)
     {
-        MainActivity MainActv = (MainActivity)mContext;
+        final MainActivity MainActv = (MainActivity)mContext;
 
-        MainActv.Synchro.TaskDone();
         String[] options = option.split("╖");
 
         for(int i = 0; i < options.length; i++) {
             MainActv.handler.YearOptions.add(options[i]);
         }
+
+        MainActv.findViewById(R.id.YearSpin).post(new Runnable() {
+            @Override
+            public void run() {
+                MainActv.initGradeSpinner(0);
+            }
+        });
     }
 }
