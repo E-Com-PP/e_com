@@ -1,9 +1,11 @@
 package com.fci.e_com.Database;
 
+import com.fci.e_com.E_mail;
 import com.fci.e_com.Grade;
 import com.fci.e_com.NewsObj;
 import com.fci.e_com.MainActivity;
 import com.fci.e_com.UserSettings;
+import com.fci.e_com.receivedFile;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -24,6 +26,8 @@ public class DatabaseOperations extends SQLiteOpenHelper {
     public static final String[] NewsColumnNames = new String[] {"Body", "Date"};
     public static final String[] UserColumnNames = new String[] {"Username", "Year", "Status", "Level", "Minor", "MajorTrack", "Name", "ID", "GPA", "Advisor", "Visits"};
     public static final String[] Top50ColumnNames = new String[] {"Level", "Department", "Rank", "ID", "Name", "GPA", "Total"};
+    public static final String[] InboxColumnNames = new String[] {"Username", "Date", "Msg", "Fr", "T", "openURL", "deleteURL", "replyURL", "Message", "ID" };
+    public static final String[] FilesColumnNames = new String[] {"Username", "Date", "Fr", "Description", "T", "DownloadLink"};
 
     public DatabaseOperations(Context context, String DBName) {
         super(context, DBName, null, 1);
@@ -169,6 +173,76 @@ public class DatabaseOperations extends SQLiteOpenHelper {
 
             Update("Top50", new String[]{"Level", "Department", "Rank"}, new String[]{Level, Department, Vals[2]}, Top50ColumnNames, Vals, true);
         }
+    }
+    public void createInboxTable(String Username, List<E_mail> Emails)
+    {
+        String[] Types = new String[] {"TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT"};
+        CreateTable("Inbox", InboxColumnNames, Types);
+
+        for(int i = 0; i < Emails.size(); i++)
+        {
+            E_mail mail = Emails.get(i);
+            String[] Vals = new String[]{Username, mail.date, mail.msg, mail.from, mail.to, mail.openURL, mail.deleteURL, mail.replyURL, mail.message, Integer.toString(mail.id)};
+
+            Update("Inbox", new String[]{"Username", "Date", "Msg"}, new String[]{Username, Vals[1], Vals[2]}, InboxColumnNames, Vals, true);
+        }
+    }
+    public void createFilesTable(String Username, List<receivedFile> files)
+    {
+        String[] Types = new String[] {"TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT"};
+        CreateTable("Files", FilesColumnNames, Types);
+
+        for(int i = 0; i < files.size(); i++)
+        {
+            receivedFile file = files.get(i);
+            String[] Vals = new String[]{Username, file.date, file.from, file.fileDescription, file.to, file.downloadLink};
+
+            Update("Files", new String[]{"Username", "Date", "Description"}, new String[]{Username, Vals[1], Vals[3]}, FilesColumnNames, Vals, true);
+        }
+    }
+    public boolean LoadEmail(MainActivity ma, String Username, int type)
+    {
+        try {
+            switch(type) {
+                case 0: {
+                    Cursor cur = Select("Inbox", InboxColumnNames, new String[]{"Username"}, new String[]{Username});
+                    if (cur.getCount() == 0)
+                        return false;
+
+                    List<E_mail> finalEmails = new ArrayList<>();
+
+                    cur.moveToFirst();
+                    for (int i = 0; i < cur.getCount(); i++) {
+                        finalEmails.add(new E_mail(cur.getString(1), cur.getString(2), cur.getString(3), cur.getString(4), cur.getString(5), ma, Integer.parseInt(cur.getString(9))));
+
+                        cur.moveToNext();
+                    }
+
+                    ma.allMails.e_mails = finalEmails;
+                    return true;
+                }
+                case 1: {
+                    Cursor cur = Select("Files", FilesColumnNames, new String[]{"Username"}, new String[]{Username});
+                    if (cur.getCount() == 0)
+                        return false;
+
+                    List<receivedFile> finalFiles = new ArrayList<>();
+
+                    cur.moveToFirst();
+                    for (int i = 0; i < cur.getCount(); i++) {
+                        finalFiles.add(new receivedFile(ma, cur.getString(1), cur.getString(2), cur.getString(3), cur.getString(4), cur.getString(5)));
+
+                        cur.moveToNext();
+                    }
+
+                    ma.allMails.recievedFile = finalFiles;
+                    return true;
+                }
+            }
+        }
+        catch (Exception ex) {}
+
+        return false;
     }
     public boolean LoadTop50(MainActivity ma, String dep, String lev)
     {

@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
 
     WebView webViewer;
     public WebHandler handler = new WebHandler(this);
-    E_Mails allMails;
+    public E_Mails allMails;
     public Top_50 top;
     WebAppInterface webInterface;
     GWebAppInterface GInterface;
@@ -184,12 +184,17 @@ public class MainActivity extends AppCompatActivity
                         spec.setContent(R.id.files);
                         spec.setIndicator("Received Files");
                         host.addTab(spec);
-
-                        Synchro.AddTask(new NetTask(){
-                            @Override
-                            public void run() {
-                                allMails.loadPage(1);
-                            }}, false);
+                        
+                        if(ops.LoadEmail(MainActivity.this, Name, 0)) {
+                            Toast.makeText(MainActivity.this, "Loaded Inbox from DB", Toast.LENGTH_SHORT).show();
+                            fillFragment(0, 4);
+                        }
+                        else
+                            Synchro.AddTask(new NetTask(){
+                                @Override
+                                public void run() {
+                                    allMails.loadPage(1);
+                                }}, false);
                     }
                 });
                 trans.replace(R.id.fragContainer, new inboxFragment()).commit();
@@ -550,6 +555,7 @@ public class MainActivity extends AppCompatActivity
                         }
                         break;
                     }
+                    //Inbox Fragment
                     case 4:
                     {
                         LinearLayout inboxLayout = (LinearLayout)((ViewGroup)findViewById(R.id.inbox)).getChildAt(0);
@@ -563,14 +569,20 @@ public class MainActivity extends AppCompatActivity
                             ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(2))).setText(allMails.e_mails.get(i).date);
                             ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(3))).setText(allMails.e_mails.get(i).msg);
                         }
-
-                        Synchro.AddTask(new NetTask(){
-                            @Override
-                            public void run() {
-                                allMails.sendFiles();
-                            }}, false);
+                        if(ops.LoadEmail(MainActivity.this, Name, 1))
+                        {
+                            Toast.makeText(MainActivity.this, "Loaded Files from DB", Toast.LENGTH_SHORT).show();
+                            fillFragment(0, 5);
+                        }
+                        else
+                            Synchro.AddTask(new NetTask(){
+                                @Override
+                                public void run() {
+                                    allMails.sendFiles();
+                                }}, false);
                         break;
                     }
+                    //Files Fragment
                     case 5:
                     {
                         LinearLayout filesLayout = (LinearLayout)((ViewGroup)findViewById(R.id.files)).getChildAt(0);
