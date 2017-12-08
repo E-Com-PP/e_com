@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity
         allMails = new E_Mails(this);
         top = new Top_50(this);
         Bundle bundle = getIntent().getExtras();
-         Name = bundle.getString("NameStr");
+        Name = bundle.getString("NameStr");
         UserPassword = bundle.getString("PasswordStr");
     }
 

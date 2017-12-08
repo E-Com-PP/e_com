@@ -123,7 +123,7 @@ public class WebHandler {
                                     public void onPageFinished(WebView web, String url) {
                                         synchro.TaskDone();
 
-                                        Toast.makeText(MainActv, "Logged in", Toast.LENGTH_LONG).show();
+                                        //Toast.makeText(MainActv, "Logged in", Toast.LENGTH_LONG).show();
                                         synchro.AddTask(new NetTask() {
                                             @Override
                                             public void run() {
@@ -145,7 +145,7 @@ public class WebHandler {
                                     public void onPageFinished(WebView web, String url) {
                                         synchro.TaskDone();
 
-                                        Toast.makeText(MainActv, "Logged in", Toast.LENGTH_LONG).show();
+                                        //Toast.makeText(MainActv, "Logged in", Toast.LENGTH_LONG).show();
                                         synchro.AddTask(new NetTask() {
                                             @Override
                                             public void run() {
@@ -174,8 +174,10 @@ public class WebHandler {
 
     public void GetUserData()
     {
+        //TODO make this in offline mode only because you only check for username not pass
         if(MainActv.ops.LoadExistingData(MainActv, 2, 0)) {
             MainActv.Synchro.TaskDone();
+            Toast.makeText(MainActv, "Logged in from DB", Toast.LENGTH_LONG).show();
             ((TextView) MainActv.findViewById(R.id.nameTxt)).setText(MainActv.user.Name);
         }
         else
