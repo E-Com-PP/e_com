@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -153,10 +154,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        int id = 0;
+        if(item != null) {
+            id = item.getItemId();
+        }
         android.support.v4.app.FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 
-        if (id == R.id.nav_home) {
+        if (item == null || id == R.id.nav_home ) {
             trans.runOnCommit(new Runnable() {
                                   @Override
                                   public void run() {
@@ -296,9 +300,15 @@ public class MainActivity extends AppCompatActivity
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, placeholder).commit();
         }
         else if (id == R.id.nav_logout) {
-            Intent LogOutIntent = new Intent(this, LogIn.class);
-            startActivity(LogOutIntent);
+            //Intent LogOutIntent = new Intent(this, LogIn.class);
+            //startActivity(LogOutIntent);
+            SharedPreferences prefs = getSharedPreferences("ACCOUNT", 0);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("Username", null);
+            editor.putString("Password", null);
+            editor.commit();
 
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

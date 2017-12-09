@@ -169,10 +169,6 @@
             <include layout="@layout/grades_my_grades" />
 
 
-        </RelativeLayout>
-
-
-
 
         </LinearLayout>
 
