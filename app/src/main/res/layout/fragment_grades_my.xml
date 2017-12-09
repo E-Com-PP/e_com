@@ -104,6 +104,76 @@
 
             <include layout="@layout/grades_my_grades" />
 
+            <TextView
+                android:id="@+id/myGrades_term2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/myGrades_year"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="18dp"
+                android:padding="10dp"
+                android:text="2nd term"
+                android:textSize="14sp" />
+
+            <RelativeLayout
+                android:id="@+id/MyGrades_header2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#DFE5EC"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/myGrades_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:text="Title"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/myGrades_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_toLeftOf="@+id/myGrades_grade"
+                    android:layout_toStartOf="@+id/myGrades_grade"
+                    android:text="Total"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/myGrades_grade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="21dp"
+                    android:layout_marginRight="21dp"
+                    android:layout_toLeftOf="@+id/myGrades_absent"
+                    android:layout_toStartOf="@+id/myGrades_absent"
+                    android:text="Grade"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/myGrades_absent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:text="Absent"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/grades_my_grades" />
+
+
+        </RelativeLayout>
+
+
+
+
         </LinearLayout>
 
     </ScrollView>
