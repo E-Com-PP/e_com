@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.text.Html;
 import android.text.Layout;
 import android.text.method.LinkMovementMethod;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -67,8 +68,8 @@ public class MainActivity extends AppCompatActivity
     public int loggedIn = 0;
     public boolean isInstantiated = false;
     String currSelectedYear = "";
-    String CurrentselectedYear2="";
-    String CurrentSelectedType="";
+    String CurrentselectedYear2="1";
+    String CurrentSelectedType="ALL";
     String UserPassword="";
     public String Name="";
     int GraterThan2 =0;
@@ -119,12 +120,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+
     }
 
     @Override
@@ -257,7 +253,7 @@ public class MainActivity extends AppCompatActivity
                         public void onTabChanged(String s) {
                             if(s == "Top 50")
                             {
-                                if(ops.LoadTop50(handler.MainActv, YearsSpinner.getSelectedItem().toString(), TypeSpinner.getSelectedItem().toString())) 
+                                if(ops.LoadTop50(handler.MainActv, CurrentselectedYear2, CurrentSelectedType))
                                 {
                                     fillFragment(GraterThan2, 3);
                                     Toast.makeText(MainActivity.this, "Loaded Top 50 from DB", Toast.LENGTH_SHORT).show();
@@ -268,7 +264,7 @@ public class MainActivity extends AppCompatActivity
                                     Synchro.AddTask(new NetTask() {
                                         @Override
                                         public void run() {
-                                            top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()), TypeSpinner.getSelectedItem().toString(), GInterface);
+                                            top.getTop_50(Integer.parseInt(CurrentselectedYear2), CurrentSelectedType, GInterface);
                                         }
                                     }, false);
                                 }
@@ -377,6 +373,29 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                         CurrentSelectedType = parentView.getSelectedItem().toString();
+                        if (CurrentSelectedType != "") {
+                            if (CurrentSelectedType!="ALL")
+                            {
+                                EqualALl=true;
+
+                            }
+                            else {EqualALl=false;}}
+                        if(ops.LoadTop50(handler.MainActv, CurrentselectedYear2, CurrentSelectedType))
+                        {
+                            fillFragment(GraterThan2, 3);
+                            Toast.makeText(MainActivity.this, "Loaded Top 50 from DB", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            //top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),GInterface);
+                            Synchro.AddTask(new NetTask() {
+                                @Override
+                                public void run() {
+                                    top.getTop_50(Integer.parseInt(CurrentselectedYear2), CurrentSelectedType, GInterface);
+                                }
+                            }, false);
+                        }
+
 
                     }
 
@@ -387,20 +406,13 @@ public class MainActivity extends AppCompatActivity
 
                 });
                 TempSpinner.setAdapter(adap);
-                if (CurrentSelectedType != "") {
-                    if (CurrentSelectedType!="ALL")
-                    {
-                        EqualALl=true;
-
-                    }
-                    else {EqualALl=false;}
                     for (int i = 0; i < TempSpinner.getCount(); i++) {
                         if (CurrentSelectedType.equals(TempSpinner.getItemAtPosition(i).toString())) {
                             TempSpinner.setSelection(i);
                             break;
                         }
                     }
-                }
+
 
 
                 break;
@@ -418,6 +430,31 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                         CurrentselectedYear2 = parentView.getSelectedItem().toString();
+                        if (CurrentselectedYear2 != "") {
+                            if((CurrentselectedYear2=="3"||CurrentselectedYear2=="4")&&!EqualALl)
+                            {
+
+                                GraterThan2=1;
+                            }
+                            else
+                            {
+                                GraterThan2=0;
+                            }}
+                        if(ops.LoadTop50(handler.MainActv, CurrentselectedYear2, CurrentSelectedType))
+                        {
+                            fillFragment(GraterThan2, 3);
+                            Toast.makeText(MainActivity.this, "Loaded Top 50 from DB", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            //top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),GInterface);
+                            Synchro.AddTask(new NetTask() {
+                                @Override
+                                public void run() {
+                                    top.getTop_50(Integer.parseInt(CurrentselectedYear2), CurrentSelectedType, GInterface);
+                                }
+                            }, false);
+                        }
                         ((TextView) findViewById(R.id.rank_top50)).setText("Year " + Integer.toString(position+1));
                     }
 
@@ -428,24 +465,13 @@ public class MainActivity extends AppCompatActivity
 
                 });
                 TempSpinner.setAdapter(adap);
-
-                if (CurrentselectedYear2 != "") {
-                    if((CurrentselectedYear2=="3"||CurrentselectedYear2=="4")&&!EqualALl)
-                    {
-
-                       GraterThan2=1;
-                    }
-                    else
-                        {
-                            GraterThan2=0;
-                        }
                     for (int i = 0; i < TempSpinner.getCount(); i++) {
                         if (CurrentselectedYear2.equals(TempSpinner.getItemAtPosition(i).toString())) {
                             TempSpinner.setSelection(i);
                             break;
                         }
                     }
-                }
+
                 break;
 
             }
@@ -543,7 +569,7 @@ public class MainActivity extends AppCompatActivity
                         LinearLayout ll = (LinearLayout) findViewById(R.id.LLTop50);
                         int sizeT = top.Top_50.length;
 
-                        if(sizeT != 50)
+                        if(sizeT != 50 || sizeT > (ll.getChildCount() - 2))
                         {
                             int tempSize =  ll.getChildCount() - 2;
                             for(int z = 0; z < tempSize; z++)
