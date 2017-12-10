@@ -174,7 +174,7 @@ public class WebHandler {
     public void GetUserData()
     {
         //TODO make this in offline mode only because you only check for username not pass
-        if(MainActv.ops.LoadExistingData(MainActv, 2, 0)) {
+        if(MainActivity.OfflineMode && MainActv.ops.LoadExistingData(MainActv, 2, 0)) {
             MainActv.Synchro.TaskDone();
             Toast.makeText(MainActv, "Logged in from DB", Toast.LENGTH_LONG).show();
             ((TextView) MainActv.findViewById(R.id.nameTxt)).setText(MainActv.user.Name);

@@ -5,14 +5,16 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="#EFF2F7"
-    android:padding="12dp">
+    android:padding="12dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="20dp">
 
     <TextView
         android:id="@+id/title_myGrades"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLength="22"
-        android:text="Data Communication"
+        android:text="Decision Support"
         android:textSize="14sp"
         android:layout_marginLeft="8dp"/>
 
@@ -21,28 +23,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:maxLines="2"
-        android:text="92"
-        android:textSize="16sp"
-        android:layout_marginRight="52dp"
-        android:layout_marginEnd="52dp"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/grades_myGrades"
-        android:layout_toStartOf="@+id/grades_myGrades" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/title_myGrades"
+        android:layout_toRightOf="@+id/title_myGrades"
+        android:maxLines="2"
+        android:text="8:00"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/grades_myGrades"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:maxLines="2"
-        android:text="A+"
-        android:textSize="16sp"
-        android:layout_marginEnd="54dp"
-        android:layout_marginRight="54dp"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/absent_myGrades"
-        android:layout_toStartOf="@+id/absent_myGrades" />
+        android:layout_marginLeft="21dp"
+        android:layout_marginStart="21dp"
+        android:layout_toEndOf="@+id/total_myGrades"
+        android:layout_toRightOf="@+id/total_myGrades"
+        android:maxLines="2"
+        android:text="9:15"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/absent_myGrades"
@@ -50,7 +52,7 @@
         android:layout_height="wrap_content"
 
         android:maxLines="2"
-        android:text="1"
+        android:text="Hall 561"
         android:textSize="16sp"
         android:layout_marginEnd="16dp"
         android:layout_alignParentTop="true"

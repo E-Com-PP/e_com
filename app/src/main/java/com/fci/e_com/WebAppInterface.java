@@ -2,7 +2,9 @@ package com.fci.e_com;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.view.menu.ShowableListMenu;
+import android.view.MenuItem;
 import android.webkit.JavascriptInterface;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
@@ -57,20 +59,39 @@ public class WebAppInterface {
     @JavascriptInterface
     public void isValidLogin(String valid)
     {
-        MainActivity ma = (MainActivity)mContext;
+        final MainActivity ma = (MainActivity)mContext;
         if(valid.equals("true"))
         {
             ma.loggedIn = 1;
             ma.ShowDialogProgress(false);
 
+            SharedPreferences prefs = ma.getSharedPreferences("ACCOUNT", 0);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("Username", ma.Name);
+            editor.putString("Password", ma.UserPassword);
+            editor.commit();
+
+            ma.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ma.onNavigationItemSelected(null);
+                }
+            });
+
             Toast.makeText(ma, "Logged in", Toast.LENGTH_LONG).show();
         }
         else
         {
+            ma.ShowDialogProgress(false);
             Toast.makeText(ma, "Authentication Failed. Please try entering your username and password again.", Toast.LENGTH_LONG).show();
-            //ma.ShowDialogProgress(false);
-            Intent LogOutIntent = new Intent(ma, LogIn.class);
-            ma.startActivity(LogOutIntent);
+            SharedPreferences prefs = ma.getSharedPreferences("ACCOUNT", 0);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("Username", null);
+            editor.putString("Password", null);
+            editor.commit();
+            //Intent LogOutIntent = new Intent(ma, LogIn.class);
+            //ma.startActivity(LogOutIntent);
+            ma.finish();
         }
     }
 
@@ -100,8 +121,6 @@ public class WebAppInterface {
         MainActivity MA = ((MainActivity)mContext);
         MA.loggedIn = (logged.equals("true")) ? 1 : 0;
         MA.handler.Login(MA.Name, MA.UserPassword);
-        MA.Name="";
-        MA.UserPassword="";
     }
 
     @JavascriptInterface

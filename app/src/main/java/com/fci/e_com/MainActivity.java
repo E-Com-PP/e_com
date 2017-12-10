@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.text.Html;
 import android.text.Layout;
 import android.text.method.LinkMovementMethod;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -25,6 +27,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -48,6 +51,8 @@ import layout.newsFragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static boolean OfflineMode = false;
+
     WebView webViewer;
     public WebHandler handler = new WebHandler(this);
     public E_Mails allMails;
@@ -56,14 +61,15 @@ public class MainActivity extends AppCompatActivity
     GWebAppInterface GInterface;
     Synchronizer Synchro = new Synchronizer(this, 500);
 
-    public DatabaseOperations ops = new DatabaseOperations(this, "ECOMT3");
+    static final String DATABASE_NAME = "ECOMA0.2";
+    public DatabaseOperations ops = new DatabaseOperations(this, DATABASE_NAME);
     public UserSettings user;
     public List<NewsObj> News = new ArrayList<NewsObj>();
     public int loggedIn = 0;
     public boolean isInstantiated = false;
     String currSelectedYear = "";
-    String CurrentselectedYear2="";
-    String CurrentSelectedType="";
+    String CurrentselectedYear2="1";
+    String CurrentSelectedType="ALL";
     String UserPassword="";
     public String Name="";
     int GraterThan2 =0;
@@ -99,6 +105,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        progressDialog.dismiss();
+    }
+
+    @Override
     protected void onResume()
     {
         super.onResume();
@@ -107,12 +120,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+
     }
 
     @Override
@@ -131,16 +139,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Cursor cur = ops.Query("Grade", ops.GradeColumnNames);
-            cur.moveToFirst();
-            do
-            {
-                if(cur.getString(0).equals("1"))
-                {
-                    Toast.makeText(this, cur.getString(2), Toast.LENGTH_SHORT).show();
-                }
-            }
-            while (cur.moveToNext());
+            deleteDatabase(DATABASE_NAME);
         }
 
         return super.onOptionsItemSelected(item);
@@ -150,10 +149,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        int id = 0;
+        if(item != null) {
+            id = item.getItemId();
+        }
         android.support.v4.app.FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 
-        if (id == R.id.nav_home) {
+        if (item == null || id == R.id.nav_home ) {
             trans.runOnCommit(new Runnable() {
                                   @Override
                                   public void run() {
@@ -251,7 +253,7 @@ public class MainActivity extends AppCompatActivity
                         public void onTabChanged(String s) {
                             if(s == "Top 50")
                             {
-                                if(ops.LoadTop50(handler.MainActv, YearsSpinner.getSelectedItem().toString(), TypeSpinner.getSelectedItem().toString())) 
+                                if(ops.LoadTop50(handler.MainActv, CurrentselectedYear2, CurrentSelectedType))
                                 {
                                     fillFragment(GraterThan2, 3);
                                     Toast.makeText(MainActivity.this, "Loaded Top 50 from DB", Toast.LENGTH_SHORT).show();
@@ -262,7 +264,7 @@ public class MainActivity extends AppCompatActivity
                                     Synchro.AddTask(new NetTask() {
                                         @Override
                                         public void run() {
-                                            top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()), TypeSpinner.getSelectedItem().toString(), GInterface);
+                                            top.getTop_50(Integer.parseInt(CurrentselectedYear2), CurrentSelectedType, GInterface);
                                         }
                                     }, false);
                                 }
@@ -293,9 +295,15 @@ public class MainActivity extends AppCompatActivity
             //getSupportFragmentManager().beginTransaction().replace(R.id.fragContainer, placeholder).commit();
         }
         else if (id == R.id.nav_logout) {
-            Intent LogOutIntent = new Intent(this, LogIn.class);
-            startActivity(LogOutIntent);
+            //Intent LogOutIntent = new Intent(this, LogIn.class);
+            //startActivity(LogOutIntent);
+            SharedPreferences prefs = getSharedPreferences("ACCOUNT", 0);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("Username", null);
+            editor.putString("Password", null);
+            editor.commit();
 
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -365,6 +373,29 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                         CurrentSelectedType = parentView.getSelectedItem().toString();
+                        if (CurrentSelectedType != "") {
+                            if (CurrentSelectedType!="ALL")
+                            {
+                                EqualALl=true;
+
+                            }
+                            else {EqualALl=false;}}
+                        if(ops.LoadTop50(handler.MainActv, CurrentselectedYear2, CurrentSelectedType))
+                        {
+                            fillFragment(GraterThan2, 3);
+                            Toast.makeText(MainActivity.this, "Loaded Top 50 from DB", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            //top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),GInterface);
+                            Synchro.AddTask(new NetTask() {
+                                @Override
+                                public void run() {
+                                    top.getTop_50(Integer.parseInt(CurrentselectedYear2), CurrentSelectedType, GInterface);
+                                }
+                            }, false);
+                        }
+
 
                     }
 
@@ -375,20 +406,13 @@ public class MainActivity extends AppCompatActivity
 
                 });
                 TempSpinner.setAdapter(adap);
-                if (CurrentSelectedType != "") {
-                    if (CurrentSelectedType!="ALL")
-                    {
-                        EqualALl=true;
-
-                    }
-                    else {EqualALl=false;}
                     for (int i = 0; i < TempSpinner.getCount(); i++) {
                         if (CurrentSelectedType.equals(TempSpinner.getItemAtPosition(i).toString())) {
                             TempSpinner.setSelection(i);
                             break;
                         }
                     }
-                }
+
 
 
                 break;
@@ -406,6 +430,31 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                         CurrentselectedYear2 = parentView.getSelectedItem().toString();
+                        if (CurrentselectedYear2 != "") {
+                            if((CurrentselectedYear2=="3"||CurrentselectedYear2=="4")&&!EqualALl)
+                            {
+
+                                GraterThan2=1;
+                            }
+                            else
+                            {
+                                GraterThan2=0;
+                            }}
+                        if(ops.LoadTop50(handler.MainActv, CurrentselectedYear2, CurrentSelectedType))
+                        {
+                            fillFragment(GraterThan2, 3);
+                            Toast.makeText(MainActivity.this, "Loaded Top 50 from DB", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            //top.getTop_50(Integer.parseInt(YearsSpinner.getSelectedItem().toString()),GInterface);
+                            Synchro.AddTask(new NetTask() {
+                                @Override
+                                public void run() {
+                                    top.getTop_50(Integer.parseInt(CurrentselectedYear2), CurrentSelectedType, GInterface);
+                                }
+                            }, false);
+                        }
                         ((TextView) findViewById(R.id.rank_top50)).setText("Year " + Integer.toString(position+1));
                     }
 
@@ -416,24 +465,13 @@ public class MainActivity extends AppCompatActivity
 
                 });
                 TempSpinner.setAdapter(adap);
-
-                if (CurrentselectedYear2 != "") {
-                    if((CurrentselectedYear2=="3"||CurrentselectedYear2=="4")&&!EqualALl)
-                    {
-
-                       GraterThan2=1;
-                    }
-                    else
-                        {
-                            GraterThan2=0;
-                        }
                     for (int i = 0; i < TempSpinner.getCount(); i++) {
                         if (CurrentselectedYear2.equals(TempSpinner.getItemAtPosition(i).toString())) {
                             TempSpinner.setSelection(i);
                             break;
                         }
                     }
-                }
+
                 break;
 
             }
@@ -531,7 +569,7 @@ public class MainActivity extends AppCompatActivity
                         LinearLayout ll = (LinearLayout) findViewById(R.id.LLTop50);
                         int sizeT = top.Top_50.length;
 
-                        if(sizeT != 50)
+                        if(sizeT != 50 || sizeT > (ll.getChildCount() - 2))
                         {
                             int tempSize =  ll.getChildCount() - 2;
                             for(int z = 0; z < tempSize; z++)
@@ -561,10 +599,11 @@ public class MainActivity extends AppCompatActivity
                     //Inbox Fragment
                     case 4:
                     {
+                        Toast.makeText(MainActivity.this, "bd2", Toast.LENGTH_SHORT).show();
                         LinearLayout inboxLayout = (LinearLayout)((ViewGroup)findViewById(R.id.inbox)).getChildAt(0);
                         inboxLayout.removeAllViews();
 
-                        for(int i = 0; i < 7; i++) {
+                        for(int i = 0; i < allMails.e_mails.size(); i++) {
                             infl.inflate(R.layout.home_inbox, (ViewGroup) inboxLayout);
 
                             ((TextView) (((ViewGroup) inboxLayout.getChildAt(i)).getChildAt(0))).setText(allMails.e_mails.get(i).from);
@@ -591,13 +630,25 @@ public class MainActivity extends AppCompatActivity
                         LinearLayout filesLayout = (LinearLayout)((ViewGroup)findViewById(R.id.files)).getChildAt(0);
                         filesLayout.removeAllViews();
 
-                        for(int i = 0; i < 7; i++) {
+                        for(int i = 0; i < allMails.recievedFile.size(); i++) {
                             infl.inflate(R.layout.home_inbox, (ViewGroup) filesLayout);
 
                             ((TextView) (((ViewGroup) filesLayout.getChildAt(i)).getChildAt(0))).setText(allMails.recievedFile.get(i).from);
                             ((TextView) (((ViewGroup) filesLayout.getChildAt(i)).getChildAt(1))).setText(allMails.recievedFile.get(i).to);
                             ((TextView) (((ViewGroup) filesLayout.getChildAt(i)).getChildAt(2))).setText(allMails.recievedFile.get(i).date);
                             ((TextView) (((ViewGroup) filesLayout.getChildAt(i)).getChildAt(3))).setText(allMails.recievedFile.get(i).fileDescription);
+
+                            final int ind = i;
+                            ((ViewGroup) filesLayout.getChildAt(i)).setOnClickListener(new View.OnClickListener(){
+                                @Override
+                                public void onClick(View view) {
+                                    Synchro.AddTask(new NetTask(){
+                                        @Override
+                                        public void run() {
+                                            allMails.recievedFile.get(ind).download();
+                                        }}, false);
+                                }
+                            });
                         }
                         break;
                     }
@@ -616,7 +667,7 @@ public class MainActivity extends AppCompatActivity
         else {
             progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Logging in");
-            progressDialog.setMessage("Logging in please wait....");
+            progressDialog.setMessage("Authenticating! Hold on for a moment...");
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
