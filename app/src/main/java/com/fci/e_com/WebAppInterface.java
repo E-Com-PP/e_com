@@ -59,7 +59,7 @@ public class WebAppInterface {
     @JavascriptInterface
     public void isValidLogin(String valid)
     {
-        MainActivity ma = (MainActivity)mContext;
+        final MainActivity ma = (MainActivity)mContext;
         if(valid.equals("true"))
         {
             ma.loggedIn = 1;
@@ -71,13 +71,18 @@ public class WebAppInterface {
             editor.putString("Password", ma.UserPassword);
             editor.commit();
 
-            ma.onNavigationItemSelected(null);
+            ma.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ma.onNavigationItemSelected(null);
+                }
+            });
 
             Toast.makeText(ma, "Logged in", Toast.LENGTH_LONG).show();
         }
         else
         {
-            //ma.ShowDialogProgress(false);
+            ma.ShowDialogProgress(false);
             Toast.makeText(ma, "Authentication Failed. Please try entering your username and password again.", Toast.LENGTH_LONG).show();
             SharedPreferences prefs = ma.getSharedPreferences("ACCOUNT", 0);
             SharedPreferences.Editor editor = prefs.edit();

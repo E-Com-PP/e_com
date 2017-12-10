@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity
     GWebAppInterface GInterface;
     Synchronizer Synchro = new Synchronizer(this, 500);
 
-    public DatabaseOperations ops = new DatabaseOperations(this, "ECOMA0.1");
+    static final String DATABASE_NAME = "ECOMA0.2";
+    public DatabaseOperations ops = new DatabaseOperations(this, DATABASE_NAME);
     public UserSettings user;
     public List<NewsObj> News = new ArrayList<NewsObj>();
     public int loggedIn = 0;
@@ -103,6 +104,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        progressDialog.dismiss();
+    }
+
+    @Override
     protected void onResume()
     {
         super.onResume();
@@ -135,16 +143,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Cursor cur = ops.Query("Grade", ops.GradeColumnNames);
-            cur.moveToFirst();
-            do
-            {
-                if(cur.getString(0).equals("1"))
-                {
-                    Toast.makeText(this, cur.getString(2), Toast.LENGTH_SHORT).show();
-                }
-            }
-            while (cur.moveToNext());
+            deleteDatabase(DATABASE_NAME);
         }
 
         return super.onOptionsItemSelected(item);
